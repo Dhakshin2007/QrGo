@@ -1,0 +1,8 @@
+{
+  "name": "QrGo",
+  "description": "A web platform for event booking and secure QR-based entry management. Users register for events, and organizers scan digital tickets for instant verification. It also features AI-assisted booking verification for admins.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "prompt": ""
+}
