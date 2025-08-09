@@ -23,7 +23,7 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <footer className="text-center py-4 text-on-surface-secondary text-sm">
-            <p>QrGo &copy; 2025. All rights reserved.</p>
+            <p> &copy; 2025. All rights reserved.</p>
           </footer>
         </div>
       </HashRouter>
