@@ -3,7 +3,7 @@ import { Event } from './types';
 // To use your own logo, paste the URL here. It will be displayed on the top left of the header.
 // For best results, use a transparent PNG or SVG.
 // Example: export const LOGO_URL = 'https://example.com/my-logo.svg';
-export const LOGO_URL = '/public/logo.png';
+export const LOGO_URL = '/';
 
 export const EVENTS: Event[] = [
   {
