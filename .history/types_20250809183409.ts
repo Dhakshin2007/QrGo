@@ -1,4 +1,3 @@
-
 export enum BookingStatus {
   Pending = 'Pending',
   Confirmed = 'Confirmed',
@@ -13,8 +12,8 @@ export interface Event {
   description: string;
   image: string;
   upiId: string;
-  upiLink?: string;
   qrCodeImage?: string;
+  paymentLink?: string;
 }
 
 export interface Booking {

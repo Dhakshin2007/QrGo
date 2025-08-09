@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../services/db';
 import { Event } from '../types';
-import { ArrowLeft, Loader2, Copy, Check, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Loader2, Copy, Check } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 
 const BookingPage: React.FC = () => {
@@ -127,37 +127,24 @@ const BookingPage: React.FC = () => {
         <div className="bg-background p-6 rounded-lg mb-8 border border-primary/20">
             <h2 className="text-2xl font-bold mb-4 text-on-surface">Payment Details</h2>
             <div className="flex flex-wrap items-start gap-8">
-                <div className="flex-1 min-w-[250px] space-y-3">
-                    <div>
-                        <label className="block text-sm font-medium text-on-surface-secondary">UPI ID</label>
-                        <div className="mt-1 flex items-center gap-2">
-                        <input 
-                            type="text" 
-                            readOnly 
-                            value={event.upiId} 
-                            className="w-full bg-surface p-3 rounded-md outline-none text-on-surface font-mono"
-                        />
-                        <button 
-                            onClick={handleCopy}
-                            className="p-3 bg-primary text-white rounded-md hover:bg-primary-focus transition-colors"
-                            title="Copy UPI ID"
-                            aria-label="Copy UPI ID"
-                        >
-                            {isCopied ? <Check size={18} /> : <Copy size={18} />}
-                        </button>
-                        </div>
+                <div className="flex-1 min-w-[250px]">
+                    <label className="block text-sm font-medium text-on-surface-secondary">UPI ID</label>
+                    <div className="mt-1 flex items-center gap-2">
+                    <input 
+                        type="text" 
+                        readOnly 
+                        value={event.upiId} 
+                        className="w-full bg-surface p-3 rounded-md outline-none text-on-surface font-mono"
+                    />
+                    <button 
+                        onClick={handleCopy}
+                        className="p-3 bg-primary text-white rounded-md hover:bg-primary-focus transition-colors"
+                        title="Copy UPI ID"
+                        aria-label="Copy UPI ID"
+                    >
+                        {isCopied ? <Check size={18} /> : <Copy size={18} />}
+                    </button>
                     </div>
-                    {event.upiLink && (
-                        <a 
-                            href={event.upiLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-full inline-flex items-center justify-center gap-2 bg-accent text-white font-bold py-3 px-4 rounded-md hover:bg-indigo-600 transition-colors duration-300"
-                        >
-                            <ExternalLink size={18} />
-                            Pay with UPI App
-                        </a>
-                    )}
                 </div>
                 {event.qrCodeImage && (
                     <div className="text-center">

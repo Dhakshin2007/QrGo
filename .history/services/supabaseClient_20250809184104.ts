@@ -1,26 +1,14 @@
-
-
-
-
 import { createClient } from '@supabase/supabase-js';
 import { BookingStatus } from '../types';
 
 // --- Supabase Client Initialization ---
 
-// #############################################################################
-// #  IMPORTANT: FIX FOR "INVALID API KEY" / "401 UNAUTHORIZED" ERROR          #
-// #############################################################################
-// # The API key below is a DUMMY key. You MUST replace it with your own.      #
-// # 1. Go to your Supabase project dashboard.                                 #
-// # 2. Go to Project Settings > API.                                          #
-// # 3. Copy the `anon` `public` key.                                          #
-// # 4. Paste it here to replace the DUMMY key.                                #
-// #############################################################################
-const supabaseUrl = 'https://hkniptskidhgpavyejwz.supabase.co';
-// This is a valid-looking dummy key to prevent startup crashes. It will not work for API calls.
-const supabaseKey = 'sb_publishable_tQDQrjVzkEe6GwUMwAzoYA_YMzWUTT5'; 
+// IMPORTANT: Replace with your own Supabase project URL and anon key from your project's API settings.
+// It is highly recommended to use environment variables for these in a real-world application.
+const supabaseUrl = 'https://hkniptskidhgpavyejwz.supabase.co'; // <-- PASTE YOUR SUPABASE URL HERE
+const supabaseKey = 'sb_publishable_tQDQrjVzkEe6GwUMwAzoYA_YMzWUTT5'; // <-- PASTE YOUR SUPABASE ANON KEY HERE
 
-if (supabaseUrl.includes('your-project-url') || supabaseKey.includes('PASTE_YOUR_REAL')) {
+if (supabaseUrl.includes('your-project-url') || supabaseKey.includes('your-anon-public-key')) {
     // This will crash the app and show a clear error in the developer console,
     // preventing the app from running in a broken state.
     throw new Error("Supabase credentials are not set! Please update services/supabaseClient.ts with your project's URL and anon key. You can get these from your Supabase project's API settings.");
@@ -38,18 +26,26 @@ export type DbBooking = {
   transactionId: string;
   paymentProof: string;
   pin: string;
-  status: BookingStatus;
+  status: string;
   checkedIn: boolean;
   createdAt: string;
 };
+
+// This type represents the object we pass to the .insert() or .update() methods.
+// It uses the BookingStatus enum for type safety in our application code.
+export type DbBookingUpsert = Omit<DbBooking, 'status'> & {
+  status: BookingStatus;
+};
+
 
 export interface Database {
   public: {
     Tables: {
       bookings: {
         Row: DbBooking;
-        Insert: DbBooking;
-        Update: Partial<DbBooking>;
+        Insert: DbBookingUpsert;
+        Update: Partial<DbBookingUpsert>;
+        Relationships: [];
       };
     };
     Views: {

@@ -3,7 +3,7 @@ import { db } from '../services/db';
 import { Booking, Event } from '../types';
 import TicketCard from '../components/TicketCard';
 import { Loader2 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext.tsx';
+import { useAuth } from '../contexts/AuthContext';
 
 const MyTicketsPage: React.FC = () => {
   const [email, setEmail] = useState('');

@@ -4,7 +4,7 @@ import { Booking, BookingStatus, Event } from '../types';
 import { Html5Qrcode } from 'html5-qrcode';
 import { Loader2, Search, CheckCircle, XCircle, QrCode, ShieldAlert, BadgeInfo, UserCheck, KeyRound, Eye, Users, LogOut } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
-import { useAuth } from '../contexts/AuthContext.tsx';
+import { useAuth } from '../contexts/AuthContext';
 
 const SCANNER_REGION_ID = "qr-scanner-region";
 

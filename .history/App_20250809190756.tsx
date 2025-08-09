@@ -6,7 +6,7 @@ import MyTicketsPage from './pages/MyTicketsPage';
 import AdminPage from './pages/AdminPage';
 import Header from './components/Header';
 import { ToastProvider } from './contexts/ToastContext';
-import { AuthProvider } from './contexts/AuthContext.tsx';
+// import { AuthProvider } from './contexts/AuthContext';
 import Toast from './components/Toast';
 import { Mail } from 'lucide-react';
 

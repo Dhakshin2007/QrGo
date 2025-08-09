@@ -1,9 +1,7 @@
 
 
 
-
 import { createClient } from '@supabase/supabase-js';
-import { BookingStatus } from '../types';
 
 // --- Supabase Client Initialization ---
 
@@ -38,7 +36,7 @@ export type DbBooking = {
   transactionId: string;
   paymentProof: string;
   pin: string;
-  status: BookingStatus;
+  status: string;
   checkedIn: boolean;
   createdAt: string;
 };
