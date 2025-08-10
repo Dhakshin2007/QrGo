@@ -66,7 +66,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'food-carnival-2025',
-    organizerId: 'org-1',
+    organizerId: 'org-2',
     name: 'Gourmet Food Carnival',
     date: '2025-09-05T06:30:00Z', // Displays as 12:00 PM IST
     venue: 'Exhibition Grounds',

@@ -9,6 +9,13 @@ if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
 
+onst PUBLISHABLE_KEY = "YOUR_CLERK_PUBLISHABLE_KEY";
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+    <App />
+  </ClerkProvider>
+);
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(

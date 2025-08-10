@@ -26,7 +26,6 @@ export type Event = {
   description: string;
   image: string;
   status: EventStatus;
-  price?: number;
   requiresEntryNumber?: boolean;
   upiId?: string;
   upiLink?: string;

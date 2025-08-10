@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Event, EventStatus } from '../types';
-import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2, IndianRupee } from 'lucide-react';
+import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2 } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useEvents } from '../App';
 import { db } from '../services/db';
@@ -186,15 +186,7 @@ const BookingPage: React.FC = () => {
         
         {!isFreeEvent && event.status === EventStatus.Ongoing && (
             <div className="bg-background p-6 rounded-lg mb-8 border border-primary/20">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-4">
-                    <h2 className="text-2xl font-bold text-on-surface">Payment Instructions</h2>
-                    {event.price && (
-                        <div className="flex items-center gap-2 bg-primary text-white text-xl font-bold py-2 px-4 rounded-lg">
-                            <IndianRupee size={22} />
-                            <span>{event.price}</span>
-                        </div>
-                    )}
-                </div>
+                <h2 className="text-2xl font-bold mb-4 text-on-surface">Payment Instructions</h2>
                 <div className="flex flex-wrap gap-8 items-center">
                     <div>
                         <p className="text-on-surface-secondary mb-2">Scan the QR code or use the UPI ID:</p>
