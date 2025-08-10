@@ -95,7 +95,7 @@ const PrivacyPolicyPage: React.FC = () => {
       href="mailto:saipradeep7931@gmail.com" 
       className="text-primary underline hover:text-primary-dark"
     >
-      Pradeep
+      saipradeep7931@gmail.com
     </a>{" "}
     or{" "}
     <a 

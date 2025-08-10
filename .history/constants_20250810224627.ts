@@ -51,18 +51,6 @@ export const EVENTS: Event[] = [
     // Notice upiId, upiLink, and qrCodeImage are not included
   },
   {
-    id: 'linkedin-test',
-    organizerId: 'org-1',
-    name: 'Linkedin Test',
-    date: '2025-08-11T10:30:00Z',
-    venue: 'Community Hall',
-    description: 'This is a test event for freshers to book tickets and check the QR code functionality.',
-    image: 'https://i.postimg.cc/g0Yp4zGw/tst.jpg',
-    status: EventStatus.Ongoing,
-    requiresEntryNumber: true,
-    // Notice upiId, upiLink, and qrCodeImage are not included
-  },
-  {
     id: 'music-fest-2025',
     organizerId: 'org-1',
     name: 'Indie Music Fest',
@@ -90,18 +78,18 @@ export const EVENTS: Event[] = [
   //   upiLink: 'upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival&am=150&cu=INR',
   //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival'
   // },
-  // {
-  //   id: 'art-expo-2025',
-  //   organizerId: 'org-1',
-  //   name: 'Modern Art Expo',
-  //   date: '2025-11-01T05:30:00Z', // Displays as 11:00 AM IST
-  //   venue: 'Grand Art Gallery',
-  //   description: 'Explore stunning works from contemporary artists. The expo features paintings, sculptures, and interactive installations.',
-  //   image: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=2066&auto=format&fit=crop',
-  //   status: EventStatus.Ongoing,
-  //   price: 200,
-  //   upiId: 'artexpo@upi',
-  //   upiLink: 'upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo&am=200&cu=INR',
-  //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo'
-  // }
+  {
+    id: 'art-expo-2025',
+    organizerId: 'org-1',
+    name: 'Modern Art Expo',
+    date: '2025-11-01T05:30:00Z', // Displays as 11:00 AM IST
+    venue: 'Grand Art Gallery',
+    description: 'Explore stunning works from contemporary artists. The expo features paintings, sculptures, and interactive installations.',
+    image: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=2066&auto=format&fit=crop',
+    status: EventStatus.Ongoing,
+    price: 200,
+    upiId: 'artexpo@upi',
+    upiLink: 'upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo&am=200&cu=INR',
+    qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo'
+  }
 ];

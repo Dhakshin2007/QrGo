@@ -51,18 +51,6 @@ export const EVENTS: Event[] = [
     // Notice upiId, upiLink, and qrCodeImage are not included
   },
   {
-    id: 'linkedin-test',
-    organizerId: 'org-1',
-    name: 'Linkedin Test',
-    date: '2025-08-11T10:30:00Z',
-    venue: 'Community Hall',
-    description: 'This is a test event for freshers to book tickets and check the QR code functionality.',
-    image: 'https://i.postimg.cc/g0Yp4zGw/tst.jpg',
-    status: EventStatus.Ongoing,
-    requiresEntryNumber: true,
-    // Notice upiId, upiLink, and qrCodeImage are not included
-  },
-  {
     id: 'music-fest-2025',
     organizerId: 'org-1',
     name: 'Indie Music Fest',

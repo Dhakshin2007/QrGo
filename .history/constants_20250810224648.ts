@@ -53,11 +53,11 @@ export const EVENTS: Event[] = [
   {
     id: 'linkedin-test',
     organizerId: 'org-1',
-    name: 'Linkedin Test',
-    date: '2025-08-11T10:30:00Z',
+    name: 'Freshers Test',
+    date: '2025-08-10T10:30:00Z',
     venue: 'Community Hall',
     description: 'This is a test event for freshers to book tickets and check the QR code functionality.',
-    image: 'https://i.postimg.cc/g0Yp4zGw/tst.jpg',
+    image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2070&auto=format&fit=crop',
     status: EventStatus.Ongoing,
     requiresEntryNumber: true,
     // Notice upiId, upiLink, and qrCodeImage are not included

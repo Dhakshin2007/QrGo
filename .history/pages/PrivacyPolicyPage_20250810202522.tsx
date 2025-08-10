@@ -85,28 +85,10 @@ const PrivacyPolicyPage: React.FC = () => {
 
                  */}
             <section className="space-y-4">
-  <h3 className="text-xl font-semibold text-on-surface">Refunds</h3>
-  <p>
-    We will notify you once we’ve received and inspected your return, and let you know if the refund was approved or not. 
-    If approved, you’ll be automatically refunded on your original payment method within 10 business days. 
-    Please remember it can take some time for your bank or credit card company to process and post the refund too. 
-    If more than 15 business days have passed since we’ve approved your return, please contact us at{" "}
-    <a 
-      href="mailto:saipradeep7931@gmail.com" 
-      className="text-primary underline hover:text-primary-dark"
-    >
-      Pradeep
-    </a>{" "}
-    or{" "}
-    <a 
-      href="mailto:kothadhakshin123@gmail.com" 
-      className="text-primary underline hover:text-primary-dark"
-    >
-      Dhakshin
-    </a>.
-  </p>
-</section>
-
+                <h2 className="text-2xl font-bold text-on-surface">Refund Policy</h2>
+                 <h3 className="text-xl font-semibold text-on-surface">Refunds</h3>
+                <p>We will notify you once we’ve received and inspected your return, and let you know if the refund was approved or not. If approved, you’ll be automatically refunded on your original payment method within 10 business days. Please remember it can take some time for your bank or credit card company to process and post the refund too. If more than 15 business days have passed since we’ve approved your return, please contact us at saipradeep7931@gmail.com(9392902334).</p>
+            </section>
         </div>
       </div>
     </div>
