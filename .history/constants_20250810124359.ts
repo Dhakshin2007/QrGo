@@ -61,20 +61,20 @@ export const EVENTS: Event[] = [
     status: EventStatus.Ongoing,
     upiId: '9392902334@ptsbi',
     upiLink: 'upi://pay?pa=9392902334@ptsbi&pn=Indie%20Music%20Fest&am=350&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/mgTgMkJS/Whats-App-Image-2025-08-09-at-22-29-25-2f1030a3.jpg'
+    qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=musicfest@upi&pn=Indie%20Music%20Fest'
   },
   {
     id: 'food-carnival-2025',
-    organizerId: 'org-1',
+    organizerId: 'org-2',
     name: 'Gourmet Food Carnival',
     date: '2025-09-05T06:30:00Z', // Displays as 12:00 PM IST
     venue: 'Exhibition Grounds',
     description: 'A paradise for food lovers. Taste cuisines from around the world, watch live cooking demos, and enjoy a day of culinary delight.',
     image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop',
     status: EventStatus.Ongoing,
-    upiId: '9392902334@ptsbi',
-    upiLink: 'upi://pay?pa=9392902334@ptsbi&pn=Gourmet%20Food%20Carnival&am=150&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/mgTgMkJS/Whats-App-Image-2025-08-09-at-22-29-25-2f1030a3.jpg'
+    upiId: 'foodfest@upi',
+    upiLink: 'upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival&am=150&cu=INR',
+    qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival'
   },
   {
     id: 'art-expo-2025',
@@ -85,8 +85,8 @@ export const EVENTS: Event[] = [
     description: 'Explore stunning works from contemporary artists. The expo features paintings, sculptures, and interactive installations.',
     image: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=2066&auto=format&fit=crop',
     status: EventStatus.Ongoing,
-    upiId: '9392902334@ptsbi',
-    upiLink: 'upi://pay?pa=9392902334@ptsbi&pn=Modern%20Art%20Expo&am=200&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/mgTgMkJS/Whats-App-Image-2025-08-09-at-22-29-25-2f1030a3.jpg'
+    upiId: 'artexpo@upi',
+    upiLink: 'upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo&am=200&cu=INR',
+    qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo'
   }
 ];

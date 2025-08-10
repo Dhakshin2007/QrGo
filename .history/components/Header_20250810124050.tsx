@@ -8,9 +8,6 @@ const Header: React.FC = () => {
   const activeLinkClass = "bg-primary text-white";
   const inactiveLinkClass = "text-on-surface hover:bg-surface";
 
-  const navLinkClasses = ({ isActive }: { isActive: boolean }) => 
-    `${isActive ? activeLinkClass : inactiveLinkClass} p-2 md:px-4 md:py-2 rounded-md font-semibold transition-colors duration-200 flex items-center gap-2`;
-
   return (
     <header className="bg-surface shadow-md sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -20,29 +17,26 @@ const Header: React.FC = () => {
           ) : (
             <QrCode size={28} />
           )}
-          <span className="hidden sm:inline">QrGo</span>
+          <span>QrGo</span>
         </ReactRouterDOM.Link>
         <div className="flex items-center gap-2">
           <ReactRouterDOM.NavLink 
             to="/" 
-            className={navLinkClasses}
-            title="Events"
+            className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} px-4 py-2 rounded-md font-semibold transition-colors duration-200 flex items-center gap-2`}
           >
-            <CalendarDays size={18}/> <span className="hidden md:inline">Events</span>
+            <CalendarDays size={18}/> Events
           </ReactRouterDOM.NavLink>
           <ReactRouterDOM.NavLink 
             to="/my-tickets" 
-            className={navLinkClasses}
-            title="My Tickets"
+            className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} px-4 py-2 rounded-md font-semibold transition-colors duration-200 flex items-center gap-2`}
           >
-            <Ticket size={18}/> <span className="hidden md:inline">My Tickets</span>
+            <Ticket size={18}/> My Tickets
           </ReactRouterDOM.NavLink>
           <ReactRouterDOM.NavLink 
             to="/admin" 
-            className={navLinkClasses}
-            title="Organizer Admin"
+            className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} px-4 py-2 rounded-md font-semibold transition-colors duration-200 flex items-center gap-2`}
           >
-            <ShieldCheck size={18}/> <span className="hidden md:inline">Organizer Admin</span>
+            <ShieldCheck size={18}/> Organizer Admin
           </ReactRouterDOM.NavLink>
         </div>
       </nav>

@@ -1,5 +1,4 @@
 
-
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -86,21 +85,27 @@ const App: React.FC = () => {
                   <ReactRouterDOM.Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                 </ReactRouterDOM.Routes>
               </main>
-              <footer className="bg-surface mt-auto py-6 px-4">
-                <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-on-surface-secondary text-sm gap-4">
-                    <p className="text-center sm:text-left">QrGo &copy; 2025. All rights reserved.</p>
-                    <div className="flex items-center gap-6">
-                        <ReactRouterDOM.Link to="/privacy-policy" className="hover:text-primary transition-colors flex items-center gap-2">
-                            <Shield size={16} /> Privacy & Policy
-                        </ReactRouterDOM.Link>
-                        <a href="mailto:kothadhakshin123@gmail.com" className="hover:text-primary transition-colors flex items-center gap-2">
-                            <Mail size={16} /> Contact Support
-                        </a>
-                    </div>
-                </div>
+              <footer className="text-center py-4 text-on-surface-secondary text-sm">
+                <p>QrGo &copy; 2025. All rights reserved.</p>
               </footer>
             </div>
           </ReactRouterDOM.HashRouter>
+          <ReactRouterDOM.Link
+            to="/privacy-policy"
+            className="fixed bottom-6 left-6 bg-surface text-on-surface-secondary p-4 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2 z-50"
+            title="Privacy & Policy"
+            aria-label="Privacy and Policy"
+          >
+            <Shield size={24} />
+          </ReactRouterDOM.Link>
+          <a
+            href="mailto:kothadhakshin123@gmail.com"
+            className="fixed bottom-6 right-6 bg-accent text-white p-4 rounded-full shadow-lg hover:bg-indigo-600 transition-colors flex items-center gap-2 z-50"
+            title="Contact Support"
+            aria-label="Contact Support"
+          >
+            <Mail size={24} />
+          </a>
           <Toast />
         </EventProvider>
       </AuthProvider>

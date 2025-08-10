@@ -157,7 +157,7 @@ const BookingPage: React.FC = () => {
                             Pay with UPI App <ExternalLink size={16}/>
                         </a>
                     </div>
-                    {event.qrCodeImage && <img src={event.qrCodeImage} alt="Payment QR Code" className="w-32 h-32 sm:w-40 sm:h-40 rounded-lg bg-white p-1" />}
+                    {event.qrCodeImage && <img src={event.qrCodeImage} alt="Payment QR Code" className="w-40 h-40 rounded-lg bg-white p-1" />}
                 </div>
             </div>
         )}

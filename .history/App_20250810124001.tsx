@@ -1,12 +1,10 @@
-
-
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import * as ReactRouterDOM from 'react-router-dom';
+import { HashRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BookingPage from './pages/BookingPage';
 import MyTicketsPage from './pages/MyTicketsPage';
 import AdminPage from './pages/AdminPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+// import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import Header from './components/Header';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -74,33 +72,39 @@ const App: React.FC = () => {
     <ToastProvider>
       <AuthProvider>
         <EventProvider>
-          <ReactRouterDOM.HashRouter>
+          <HashRouter>
             <div className="min-h-screen flex flex-col bg-background">
               <Header />
               <main className="flex-grow container mx-auto px-4 py-8">
-                <ReactRouterDOM.Routes>
-                  <ReactRouterDOM.Route path="/" element={<HomePage />} />
-                  <ReactRouterDOM.Route path="/book/:eventId" element={<BookingPage />} />
-                  <ReactRouterDOM.Route path="/my-tickets" element={<MyTicketsPage />} />
-                  <ReactRouterDOM.Route path="/admin" element={<AdminPage />} />
-                  <ReactRouterDOM.Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                </ReactRouterDOM.Routes>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/book/:eventId" element={<BookingPage />} />
+                  <Route path="/my-tickets" element={<MyTicketsPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                </Routes>
               </main>
-              <footer className="bg-surface mt-auto py-6 px-4">
-                <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-on-surface-secondary text-sm gap-4">
-                    <p className="text-center sm:text-left">QrGo &copy; 2025. All rights reserved.</p>
-                    <div className="flex items-center gap-6">
-                        <ReactRouterDOM.Link to="/privacy-policy" className="hover:text-primary transition-colors flex items-center gap-2">
-                            <Shield size={16} /> Privacy & Policy
-                        </ReactRouterDOM.Link>
-                        <a href="mailto:kothadhakshin123@gmail.com" className="hover:text-primary transition-colors flex items-center gap-2">
-                            <Mail size={16} /> Contact Support
-                        </a>
-                    </div>
-                </div>
+              <footer className="text-center py-4 text-on-surface-secondary text-sm">
+                <p>QrGo &copy; 2025. All rights reserved.</p>
               </footer>
             </div>
-          </ReactRouterDOM.HashRouter>
+          </HashRouter>
+          <Link
+            to="/privacy-policy"
+            className="fixed bottom-6 left-6 bg-surface text-on-surface-secondary p-4 rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2 z-50"
+            title="Privacy & Policy"
+            aria-label="Privacy and Policy"
+          >
+            <Shield size={24} />
+          </Link>
+          <a
+            href="mailto:kothadhakshin123@gmail.com"
+            className="fixed bottom-6 right-6 bg-accent text-white p-4 rounded-full shadow-lg hover:bg-indigo-600 transition-colors flex items-center gap-2 z-50"
+            title="Contact Support"
+            aria-label="Contact Support"
+          >
+            <Mail size={24} />
+          </a>
           <Toast />
         </EventProvider>
       </AuthProvider>
