@@ -67,7 +67,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 <p>All concerns or communications relating to these Terms must be communicated to us using the contact information provided on this website.</p>
             </section>
             
-            {/* <section className="space-y-4">
+            <section className="space-y-4">
                 <h2 className="text-2xl font-bold text-on-surface">Shipping Policy</h2>
                 
                 <h3 className="text-xl font-semibold text-on-surface">Processing Time</h3>
@@ -84,8 +84,8 @@ const PrivacyPolicyPage: React.FC = () => {
                 <p>We have a 5-day return policy, which means you have 5 days after receiving your item to request a return. Once the return product is received it will be inspected and the return will be approved within 2 days</p>
 
                 <h3 className="text-xl font-semibold text-on-surface">Refunds</h3>
-                <p>We will notify you once we’ve received and inspected your return, and let you know if the refund was approved or not. If approved, you’ll be automatically refunded on your original payment method within 10 business days. Please remember it can take some time for your bank or credit card company to process and post the refund too. If more than 15 business days have passed since we’ve approved your return, please contact us at saipradeep7931@gmail.com(9392902334).</p>
-            </section> */}
+                <p>We will notify you once we’ve received and inspected your return, and let you know if the refund was approved or not. If approved, you’ll be automatically refunded on your original payment method within 10 business days. Please remember it can take some time for your bank or credit card company to process and post the refund too. If more than 15 business days have passed since we’ve approved your return, please contact us at <a>hrerf= </a>saipradeep7931@gmail.com(9392902334).</p>
+            </section>
         </div>
       </div>
     </div>

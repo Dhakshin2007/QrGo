@@ -86,7 +86,7 @@ export const EVENTS: Event[] = [
     image: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=2066&auto=format&fit=crop',
     status: EventStatus.Ongoing,
     upiId: '9392902334@ptsbi',
-    upiLink: 'upi://pay?pa=9392902334@ptsbi&pn=Modern%20Art%20Expo&am=70&cu=INR',
+    upiLink: 'upi://pay?pa=9392902334@ptsbi&pn=Modern%20Art%20Expo&am=200&cu=INR',
     qrCodeImage: 'https://i.postimg.cc/mgTgMkJS/Whats-App-Image-2025-08-09-at-22-29-25-2f1030a3.jpg'
   }
 ];
