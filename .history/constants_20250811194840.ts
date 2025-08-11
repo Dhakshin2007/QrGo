@@ -21,7 +21,7 @@ export const EVENTS: Event[] = [
     description: 'Delves into a mans relentless quest for vengeance since youth, driven by righting past wrongs, shaping his very existence. Viewers experience the complexities of his tumultuous vendetta journey.',
     image: 'https://i.postimg.cc/htdst9V0/coolie.jpg',
     status: EventStatus.Ongoing,
-    price: 180,
+    price: 250,
     upiId: '9392902334@ybl',
     upiLink: 'upi://pay?pa=9392902334@ybl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
     qrCodeImage: 'https://i.postimg.cc/HsdTDqNw/Whats-App-Image-2025-08-11-at-19-45-38-5707b153.jpg'

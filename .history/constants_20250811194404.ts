@@ -16,15 +16,14 @@ export const EVENTS: Event[] = [
     id: 'Coolie-2025',
     organizerId: 'org-1',
     name: 'Coolie (2025)',
-    date: '2024-08-15T08:15:00Z',
+    date: '2024-08-15T08:30:00Z',
     venue: 'Ritz Multiplex, Ropar',
     description: 'Delves into a mans relentless quest for vengeance since youth, driven by righting past wrongs, shaping his very existence. Viewers experience the complexities of his tumultuous vendetta journey.',
     image: 'https://i.postimg.cc/htdst9V0/coolie.jpg',
-    status: EventStatus.Ongoing,
-    price: 180,
-    upiId: '9392902334@ybl',
-    upiLink: 'upi://pay?pa=9392902334@ybl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/HsdTDqNw/Whats-App-Image-2025-08-11-at-19-45-38-5707b153.jpg'
+    status: EventStatus.Upcoming,
+    upiId: 'eventpass@upi',
+    upiLink: 'upi://pay?pa=eventpass@upi&pn=Coolie%20(2025)%20Booking&am=250&cu=INR',
+    qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=eventpass@upi&pn=Movie%20Screening'
   },
   // {
   //   id: 'dev-summit-2025',
