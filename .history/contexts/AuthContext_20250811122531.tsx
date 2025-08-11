@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const ORGANIZERS: Organizer[] = [
       { id: 'super-admin', username: 'Dhakshin', secretId: 'Dk07' },
       { id: 'org-1', username: 'TCA', secretId: 'tca@2334' },
-      { id: 'org-2', username: 'Alfaaz', secretId: 'Akash@7788' }
+      { id: 'org-2', username: 'Alfaaz', secretId: 'techcon-secret' }
     ];
 
     const organizer = ORGANIZERS.find(

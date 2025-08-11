@@ -75,11 +75,11 @@ export const EVENTS: Event[] = [
     // Notice upiId, upiLink, and qrCodeImage are not included
   },
   {
-    id: 'Zeitgeist-2025',
+    id: 'music-fest-2025',
     organizerId: 'org-1',
-    name: 'Zeitgeist IIT Ropar Cultural Fest',
-    date: '2025-10-25T13:30:00Z', // Displays as 7:00 PM IST
-    venue: 'IIT Ropar Campus',
+    name: 'Indie Music Fest',
+    date: '2025-08-22T13:30:00Z', // Displays as 7:00 PM IST
+    venue: 'City Park Amphitheater',
     description: 'Experience a night of unforgettable music under the stars with top indie bands. Food trucks and merch available.',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1974&auto=format&fit=crop',
     status: EventStatus.Upcoming,
