@@ -24,8 +24,8 @@ export const EVENTS: Event[] = [
     status: EventStatus.Ongoing,
     price: 180,
     upiId: '8019761141@pthdfc',
-    upiLink: 'upi://pay?pa=8019761141@pthdfc&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/9f5vW40r/Whats-App-Image-2025-08-11-at-23-13-34-9414f9df.jpg'
+    upiLink: 'upi://pay?pa=9392902334@ybl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
+    qrCodeImage: 'https://i.postimg.cc/HsdTDqNw/Whats-App-Image-2025-08-11-at-19-45-38-5707b153.jpg'
   },
   // {
   //   id: 'dev-summit-2025',
