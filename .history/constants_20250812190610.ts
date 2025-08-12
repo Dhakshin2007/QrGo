@@ -24,7 +24,7 @@ export const EVENTS: Event[] = [
     status: EventStatus.Ongoing,
     price: 180,
     upiId: 'deepakteja9206@axl',
-    upiLink: 'upi://pay?pa=deepakteja9206@axl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
+    upiLink: 'upi://pay?pa=8019761141@pthdfc&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
     qrCodeImage: 'https://i.postimg.cc/brw1nB7W/Whats-App-Image-2025-08-12-at-19-03-35-202002bf.jpg'
   },
   // {
