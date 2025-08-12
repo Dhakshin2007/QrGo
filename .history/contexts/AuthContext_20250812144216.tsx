@@ -22,8 +22,8 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 // Example for a Node.js environment:
 // const ORGANIZERS = JSON.parse(process.env.ORGANIZERS_JSON || '[]');
 export const ORGANIZERS: Organizer[] = [
-  { id: 'super-admin', username: 'Dhakshin', name: 'QrGo Platform', logoUrl: 'https://i.postimg.cc/zf6Twfjr/Qr-Go-Logo.png', secretId: 'Dk07' },
-  { id: 'org-1', username: 'TCA', name: 'TCA IIT Ropar', logoUrl: 'https://i.postimg.cc/02kPf0r8/TCA-Logo.jpg', secretId: 'tca@2334' },
+  { id: 'super-admin', username: 'Dhakshin', name: 'QrGo Platform', logoUrl: 'https://i.postimg.cc/Pp2xSxRH/qr.png', secretId: 'Dk07' },
+  { id: 'org-1', username: 'TCA', name: 'TCA Entertainments', logoUrl: 'https://i.postimg.cc/j5P0xTzG/TCA.png', secretId: 'tca@2334' },
   { id: 'org-2', username: 'Alfaaz', name: 'Alfaaz IIT Ropar', logoUrl: 'https://i.postimg.cc/d1wN8tB3/Tech-Con.png', secretId: 'Akash7788' }
 ];
 

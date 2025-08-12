@@ -54,7 +54,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'linkedin-test',
-    organizerId: 'super-admin',
+    organizerId: 'org-1',
     name: 'Linkedin Test',
     date: '2025-08-11T10:30:00Z',
     venue: 'Online Event',
@@ -64,18 +64,18 @@ export const EVENTS: Event[] = [
     requiresEntryNumber: false,
     // Notice upiId, upiLink, and qrCodeImage are not included
   },
-  // {
-  //   id: 'alfaaz-test',
-  //   organizerId: 'org-2',
-  //   name: 'Alfaaz Test',
-  //   date: '2025-08-11T16:45:00Z',
-  //   venue: 'Lecture Hall Complex',
-  //   description: 'This is a test event for Alfaaz Attendants to book tickets and check the QR code functionality.',
-  //   image: 'https://i.postimg.cc/3xC43b7M/image.png',
-  //   status: EventStatus.Ongoing,
-  //   requiresEntryNumber: false,
-  //   // Notice upiId, upiLink, and qrCodeImage are not included
-  // },
+  {
+    id: 'alfaaz-test',
+    organizerId: 'org-2',
+    name: 'Alfaaz Test',
+    date: '2025-08-11T16:45:00Z',
+    venue: 'Lecture Hall Complex',
+    description: 'This is a test event for Alfaaz Attendants to book tickets and check the QR code functionality.',
+    image: 'https://i.postimg.cc/3xC43b7M/image.png',
+    status: EventStatus.Ongoing,
+    requiresEntryNumber: false,
+    // Notice upiId, upiLink, and qrCodeImage are not included
+  },
   {
     id: 'Zeitgeist-2025',
     organizerId: 'org-1',

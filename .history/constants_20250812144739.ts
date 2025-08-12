@@ -54,7 +54,7 @@ export const EVENTS: Event[] = [
   },
   {
     id: 'linkedin-test',
-    organizerId: 'super-admin',
+    organizerId: 'org-1',
     name: 'Linkedin Test',
     date: '2025-08-11T10:30:00Z',
     venue: 'Online Event',
