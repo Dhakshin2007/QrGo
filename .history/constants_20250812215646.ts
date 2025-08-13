@@ -21,12 +21,11 @@ export const EVENTS: Event[] = [
     venueMapLink: 'https://maps.app.goo.gl/X12Dntqj1eRzVzra7',
     description: 'Delves into a mans relentless quest for vengeance since youth, driven by righting past wrongs, shaping his very existence. Viewers experience the complexities of his tumultuous vendetta journey.',
     image: 'https://i.postimg.cc/htdst9V0/coolie.jpg',
-    status: EventStatus.Ongoing,
+    status: EventStatus.BookingStopped,
     price: 180,
-    remarks: 'Screen Number: 2 , Please be before 20min of Show Time ! 💓',
-    upiId: 'No Bookings Are Accepted',
+    upiId: '#',
     upiLink: 'upi://pay?pa=deepakteja9206@axl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
-    qrCodeImage: '#'
+    qrCodeImage: 'https://i.postimg.cc/brw1nB7W/Whats-App-Image-2025-08-12-at-19-03-35-202002bf.jpg'
   },
   // {
   //   id: 'dev-summit-2025',

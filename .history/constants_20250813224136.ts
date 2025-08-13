@@ -23,7 +23,7 @@ export const EVENTS: Event[] = [
     image: 'https://i.postimg.cc/htdst9V0/coolie.jpg',
     status: EventStatus.Ongoing,
     price: 180,
-    remarks: 'Screen Number: 2 , Please be before 20min of Show Time ! 💓',
+    remarks: 'Screen Number: 2',
     upiId: 'No Bookings Are Accepted',
     upiLink: 'upi://pay?pa=deepakteja9206@axl&pn=Coolie%20(2025)%20Booking&am=180&cu=INR',
     qrCodeImage: '#'
