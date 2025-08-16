@@ -21,7 +21,7 @@ export const EVENTS: Event[] = [
     venueMapLink: 'https://maps.app.goo.gl/X12Dntqj1eRzVzra7',
     description: 'Delves into a mans relentless quest for vengeance since youth, driven by righting past wrongs, shaping his very existence. Viewers experience the complexities of his tumultuous vendetta journey.',
     image: 'https://i.postimg.cc/htdst9V0/coolie.jpg',
-    status: EventStatus.Closed,
+    status: EventStatus.BookingStopped,
     price: 180,
     remarks: 'Please be before 20min of Show Time ! 💓',
     upiId: 'No Bookings Are Accepted',
