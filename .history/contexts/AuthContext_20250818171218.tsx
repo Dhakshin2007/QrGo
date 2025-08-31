@@ -24,7 +24,7 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 export const ORGANIZERS: Organizer[] = [
   { id: 'super-admin', username: 'Dhakshin', name: 'QrGo Platform', logoUrl: 'https://i.postimg.cc/zf6Twfjr/Qr-Go-Logo.png', secretId: 'Dk07' },
   { id: 'org-1', username: 'TCA', name: 'TCA IIT Ropar', logoUrl: 'https://i.postimg.cc/02kPf0r8/TCA-Logo.jpg', secretId: 'tca@2334' },
-  // { id: 'org-2', username: 'Fresco', name: 'Fresco Team IIT Ropar', logoUrl: 'https://i.postimg.cc/d1wN8tB3/Tech-Con.png', secretId: 'Fresco123' }
+  { id: 'org-2', username: 'Fresco', name: 'Fresco Team IIT Ropar', logoUrl: 'https://i.postimg.cc/d1wN8tB3/Tech-Con.png', secretId: 'Akash7788' }
 ];
 
 

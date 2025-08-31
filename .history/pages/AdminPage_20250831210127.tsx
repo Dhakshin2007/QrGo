@@ -58,7 +58,6 @@ const AdminPage: React.FC = () => {
 
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [isScannerLoading, setIsScannerLoading] = useState(false);
-  const [isFocusing, setIsFocusing] = useState(false);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   
   const { showToast } = useToast();
@@ -153,6 +152,8 @@ const AdminPage: React.FC = () => {
     const qrCode = new Html5Qrcode(SCANNER_REGION_ID);
     html5QrCodeRef.current = qrCode;
 
+    // This function makes the scanning box responsive. It will be a square
+    // that is 75% of the smaller dimension of the container.
     const qrboxFunction = (viewfinderWidth: number, viewfinderHeight: number) => {
         const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
         const qrBoxSize = Math.floor(minEdge * 0.75);
@@ -162,12 +163,7 @@ const AdminPage: React.FC = () => {
         };
     };
 
-    const config = { 
-      fps: 10, 
-      qrbox: qrboxFunction,
-      aspectRatio: 1.0 // Request a square video feed
-    };
-
+    const config = { fps: 10, qrbox: qrboxFunction };
     qrCode.start({ facingMode: "environment" }, config, onScanSuccess, undefined)
     .catch(err => {
         console.error("QR Scanner failed to start.", err);
@@ -209,11 +205,6 @@ const AdminPage: React.FC = () => {
     } catch (err) {
         showToast("Failed to update booking status.", 'error');
     }
-  };
-
-  const handleScannerClick = () => {
-    setIsFocusing(true);
-    setTimeout(() => setIsFocusing(false), 500); // Animation duration
   };
   
   const handleCheckIn = async () => {
@@ -535,18 +526,7 @@ const AdminPage: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="bg-surface p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><QrCode /> Scan Ticket</h2>
-                <div 
-                  id={SCANNER_REGION_ID} 
-                  className="w-full bg-gray-900 rounded-md aspect-square overflow-hidden relative cursor-pointer"
-                  onClick={handleScannerClick}
-                  title="Tap to focus"
-                >
-                   {isFocusing && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                          <div className="w-24 h-24 border-2 border-white rounded-md animate-focus-pulse"></div>
-                      </div>
-                  )}
-                </div>
+                <div id={SCANNER_REGION_ID} className="w-full bg-gray-900 rounded-md aspect-square overflow-hidden relative"></div>
             </div>
             <div className="bg-surface p-6 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><BadgeInfo /> Verification Result</h2>

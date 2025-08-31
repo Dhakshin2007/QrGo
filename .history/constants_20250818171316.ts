@@ -41,21 +41,18 @@ export const EVENTS: Event[] = [
   //   upiLink: 'upi://pay?pa=devsummit@upi&pn=Dev%20Summit%20Booking&am=500&cu=INR',
   //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=devsummit@upi&pn=Dev%20Summit'
   // },
-  // {
-  //   id: 'Fresco-2k25',
-  //   organizerId: 'org-2',
-  //   name: 'Freshers Party(2025)',
-  //   date: '2025-08-10T10:30:00Z',
-  //   venue: 'Ground Behind Dubey Canteen',
-  //   description: 'This is a event for freshers by Seniors to book tickets.',
-  //   image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2070&auto=format&fit=crop',
-  //   status: EventStatus.Ongoing,
-  //   requiresEntryNumber: true,
-  //   upiId: 'fresco@upi',
-  //   upiLink: 'upi://pay?pa=devsummit@upi&pn=Dev%20Summit%20Booking&am=500&cu=INR',
-  //   qrCodeImage: 'https://static.vecteezy.com/system/resources/previews/000/692/604/non_2x/party-crowd-banner-design-vector.jpg'
-
-  // },
+  {
+    id: 'Fresco-2k25',
+    organizerId: 'org-2',
+    name: 'Freshers Party(2025)',
+    date: '2025-08-10T10:30:00Z',
+    venue: 'Ground Behind Dubey Canteen',
+    description: 'This is a test event for freshers to book tickets and check the QR code functionality.',
+    image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2070&auto=format&fit=crop',
+    status: EventStatus.Closed,
+    requiresEntryNumber: true,
+    // Notice upiId, upiLink, and qrCodeImage are not included
+  },
   {
     id: 'linkedin-test',
     organizerId: 'super-admin',
