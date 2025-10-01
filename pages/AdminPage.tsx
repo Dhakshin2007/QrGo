@@ -58,6 +58,7 @@ const AdminPage: React.FC = () => {
 
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [isScannerLoading, setIsScannerLoading] = useState(false);
+  const [isCheckingIn, setIsCheckingIn] = useState(false);
   const [isFocusing, setIsFocusing] = useState(false);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   
@@ -105,6 +106,7 @@ const AdminPage: React.FC = () => {
       return;
     }
     (async () => {
+        setIsCheckingIn(false); // Reset check-in state on new scan
         setIsScannerLoading(true);
         try {
             const data = JSON.parse(decodedText);
@@ -163,9 +165,10 @@ const AdminPage: React.FC = () => {
     };
 
     const config = { 
-      fps: 10, 
+      fps: 25, 
       qrbox: qrboxFunction,
-      aspectRatio: 1.0 // Request a square video feed
+      aspectRatio: 1.0, // Request a square video feed
+      disableFlip: false, // May improve scanning on some devices.
     };
 
     qrCode.start({ facingMode: "environment" }, config, onScanSuccess, undefined)
@@ -218,6 +221,7 @@ const AdminPage: React.FC = () => {
   
   const handleCheckIn = async () => {
       if(scanResult && scanResult.booking && !scanResult.booking.checkedIn){
+          setIsCheckingIn(true);
           try {
             const updatedBooking = await db.updateBooking({ ...scanResult.booking, checkedIn: true });
             setScanResult({
@@ -229,6 +233,8 @@ const AdminPage: React.FC = () => {
             showToast(`${scanResult.booking.userName} checked in successfully!`, 'success');
           } catch(err) {
               showToast("Failed to check in.", 'error');
+          } finally {
+              setIsCheckingIn(false);
           }
       }
   }
@@ -548,28 +554,63 @@ const AdminPage: React.FC = () => {
                   )}
                 </div>
             </div>
-            <div className="bg-surface p-6 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center">
+            <div className="bg-surface p-6 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center transition-all duration-300">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><BadgeInfo /> Verification Result</h2>
                 {isScannerLoading ? (
-                    <div className="text-center"><Loader2 size={24} className="animate-spin inline-block" /></div>
+                    <div className="text-center py-8"><Loader2 size={32} className="animate-spin text-primary" /></div>
                 ) : scanResult ? (
-                    <div className="space-y-3">
-                      <div className={`p-4 rounded-md flex items-center gap-3 text-lg font-bold ${ scanResult.type === 'success' ? 'bg-green-500/20 text-green-300' : scanResult.type === 'warning' ? 'bg-yellow-500/20 text-yellow-300' : 'bg-red-500/20 text-red-300'}`}>{scanResult.message}</div>
-                      {scanResult.booking.id && (
-                        <div className="space-y-2 text-on-surface-secondary">
-                          <p><strong>Name:</strong> <span className="text-on-surface">{scanResult.booking.userName}</span></p>
-                          <p><strong>Status:</strong> <span className="text-on-surface">{scanResult.booking.status}</span></p>
-                          <p><strong>Checked-in:</strong> <span className="text-on-surface">{scanResult.booking.checkedIn ? 'Yes' : 'No'}</span></p>
-                        </div>
-                      )}
-                      {scanResult.type === 'success' && !scanResult.booking.checkedIn && (
-                          <button onClick={handleCheckIn} className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md hover:bg-primary-focus transition-colors flex items-center justify-center gap-2">
-                              <UserCheck /> Mark as Entered
-                          </button>
-                      )}
+                    <div className="animate-fade-in text-center">
+                        {/* Success State */}
+                        {scanResult.type === 'success' && (
+                            <div className="space-y-4">
+                                <CheckCircle size={64} className="text-green-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-green-400">
+                                    {scanResult.booking.checkedIn ? 'Check-in Successful!' : 'Valid Ticket'}
+                                </h3>
+                                <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                    <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                    <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                </div>
+                                {!scanResult.booking.checkedIn && (
+                                    <button 
+                                        onClick={handleCheckIn} 
+                                        className="w-full bg-green-600 text-white font-bold py-4 px-6 rounded-md hover:bg-green-700 transition-colors text-lg flex items-center justify-center gap-3 disabled:bg-gray-500 disabled:cursor-not-allowed"
+                                        disabled={isCheckingIn}
+                                    >
+                                        {isCheckingIn ? <Loader2 className="animate-spin" /> : <UserCheck />}
+                                        {isCheckingIn ? 'Processing...' : 'Confirm Check-In'}
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        {/* Warning State */}
+                        {scanResult.type === 'warning' && (
+                            <div className="space-y-4">
+                                <ShieldAlert size={64} className="text-yellow-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-yellow-400">{scanResult.message}</h3>
+                                <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                    <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                    <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                </div>
+                            </div>
+                        )}
+                        {/* Error State */}
+                        {scanResult.type === 'error' && (
+                            <div className="space-y-4">
+                                <XCircle size={64} className="text-red-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-red-400">{scanResult.message}</h3>
+                                {scanResult.booking.id && (
+                                   <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                       <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                       <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                   </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 ) : (
-                    <div className="text-center text-on-surface-secondary">
+                    <div className="text-center text-on-surface-secondary space-y-4">
+                        <QrCode size={48} className="mx-auto" />
                         <p>Point the camera at a QR code to begin verification.</p>
                     </div>
                 )}
