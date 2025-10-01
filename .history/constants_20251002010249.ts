@@ -32,7 +32,7 @@ export const EVENTS: Event[] = [
     id: 'tca-dushera-2k25',
     organizerId: 'org-1',
     name: 'TCA Bathukamma Event',
-    date: '2025-10-04T03:30:00Z',
+    date: '2025-10-03T12:00:00Z',
     venue: 'Lecture Hall Complex , IIT Ropar',
     description: 'Btech - 300/- , MTech - 500/- , Phd - 800/- , Pay Before 3rd October',
     image: 'https://i.postimg.cc/GpX9br2s/image.png',

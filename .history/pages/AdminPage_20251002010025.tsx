@@ -58,6 +58,8 @@ const AdminPage: React.FC = () => {
 
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [isScannerLoading, setIsScannerLoading] = useState(false);
+  const [isCheckingIn, setIsCheckingIn] = useState(false);
+  const [isFocusing, setIsFocusing] = useState(false);
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   
   const { showToast } = useToast();
@@ -68,7 +70,8 @@ const AdminPage: React.FC = () => {
     setAiSuggestions({});
     try {
         const allBookings = await db.getAllBookings();
-        const sortedBookings = allBookings.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        // Sort bookings by creation date, oldest first, to assign serial numbers.
+        const sortedBookings = allBookings.sort((a,b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         setBookings(sortedBookings);
 
         // Fetch AI suggestions in parallel
@@ -103,6 +106,7 @@ const AdminPage: React.FC = () => {
       return;
     }
     (async () => {
+        setIsCheckingIn(false); // Reset check-in state on new scan
         setIsScannerLoading(true);
         try {
             const data = JSON.parse(decodedText);
@@ -151,8 +155,6 @@ const AdminPage: React.FC = () => {
     const qrCode = new Html5Qrcode(SCANNER_REGION_ID);
     html5QrCodeRef.current = qrCode;
 
-    // This function makes the scanning box responsive. It will be a square
-    // that is 75% of the smaller dimension of the container.
     const qrboxFunction = (viewfinderWidth: number, viewfinderHeight: number) => {
         const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
         const qrBoxSize = Math.floor(minEdge * 0.75);
@@ -162,7 +164,13 @@ const AdminPage: React.FC = () => {
         };
     };
 
-    const config = { fps: 10, qrbox: qrboxFunction };
+    const config = { 
+      fps: 25, 
+      qrbox: qrboxFunction,
+      aspectRatio: 1.0, // Request a square video feed
+      disableFlip: false, // May improve scanning on some devices.
+    };
+
     qrCode.start({ facingMode: "environment" }, config, onScanSuccess, undefined)
     .catch(err => {
         console.error("QR Scanner failed to start.", err);
@@ -205,9 +213,15 @@ const AdminPage: React.FC = () => {
         showToast("Failed to update booking status.", 'error');
     }
   };
+
+  const handleScannerClick = () => {
+    setIsFocusing(true);
+    setTimeout(() => setIsFocusing(false), 500); // Animation duration
+  };
   
   const handleCheckIn = async () => {
       if(scanResult && scanResult.booking && !scanResult.booking.checkedIn){
+          setIsCheckingIn(true);
           try {
             const updatedBooking = await db.updateBooking({ ...scanResult.booking, checkedIn: true });
             setScanResult({
@@ -219,6 +233,8 @@ const AdminPage: React.FC = () => {
             showToast(`${scanResult.booking.userName} checked in successfully!`, 'success');
           } catch(err) {
               showToast("Failed to check in.", 'error');
+          } finally {
+              setIsCheckingIn(false);
           }
       }
   }
@@ -230,6 +246,9 @@ const AdminPage: React.FC = () => {
         newStatus = EventStatus.Ongoing;
         break;
       case EventStatus.Ongoing:
+        newStatus = EventStatus.BookingStopped;
+        break;
+      case EventStatus.BookingStopped:
         newStatus = EventStatus.Closed;
         break;
       case EventStatus.Closed:
@@ -294,6 +313,13 @@ const AdminPage: React.FC = () => {
                                 break;
                             case EventStatus.Ongoing:
                                 statusToggleAction = (
+                                    <button onClick={() => handleEventStatusToggle(event.id, event.status)} title="Stop Bookings" className="w-full p-2 bg-surface hover:bg-background text-on-surface-secondary rounded-md transition-colors flex items-center justify-center gap-2">
+                                        <ToggleRight size={16}/> Stop Bookings
+                                    </button>
+                                );
+                                break;
+                            case EventStatus.BookingStopped:
+                                 statusToggleAction = (
                                     <button onClick={() => handleEventStatusToggle(event.id, event.status)} title="Set to Closed" className="w-full p-2 bg-surface hover:bg-background text-on-surface-secondary rounded-md transition-colors flex items-center justify-center gap-2">
                                         <CalendarX2 size={16}/> Set Closed
                                     </button>
@@ -315,7 +341,7 @@ const AdminPage: React.FC = () => {
                               <h3 className="text-xl font-bold text-primary mb-2 pr-2">{event.name}</h3>
                               <span className={`px-2 py-1 text-xs font-bold rounded-full whitespace-nowrap ${
                                 event.status === EventStatus.Ongoing ? 'bg-green-500/20 text-green-400' :
-                                event.status === EventStatus.Upcoming ? 'bg-yellow-500/20 text-yellow-400' :
+                                event.status === EventStatus.Upcoming || event.status === EventStatus.BookingStopped ? 'bg-yellow-500/20 text-yellow-400' :
                                 'bg-red-500/20 text-red-400'
                                 }`}>{event.status}</span>
                           </div>
@@ -394,55 +420,62 @@ const AdminPage: React.FC = () => {
             <>
               {/* Mobile Card View */}
               <div className="space-y-4 md:hidden">
-                {searchedBookings.map(booking => (
-                  <div key={booking.id} className="bg-surface rounded-lg p-4 shadow-md space-y-3">
-                    <div>
-                      <div className="font-bold text-lg text-on-surface">{booking.userName}</div>
-                      <div className="text-sm text-on-surface-secondary break-all">{booking.userEmail}</div>
-                      <div className="text-xs text-on-surface-secondary mt-1">{new Date(booking.createdAt).toLocaleString()}</div>
-                    </div>
+                {searchedBookings.map(booking => {
+                  const serialNumber = eventBookings.findIndex(b => b.id === booking.id) + 1;
+                  return (
+                    <div key={booking.id} className="bg-surface rounded-lg p-4 shadow-md space-y-3">
+                        <div>
+                            <div className="flex justify-between items-start gap-4">
+                              <span className="font-bold text-lg text-on-surface break-words flex-1 pr-2">{booking.userName}</span>
+                              <span className="font-mono text-lg text-primary font-bold">#{serialNumber > 0 ? serialNumber : '-'}</span>
+                            </div>
+                            <div className="text-sm text-on-surface-secondary break-all">{booking.userEmail}</div>
+                            <div className="text-xs text-on-surface-secondary mt-1">{new Date(booking.createdAt).toLocaleString()}</div>
+                        </div>
 
-                    <div className="border-t border-background pt-3 space-y-2">
-                       {booking.entryNumber && <p className="text-sm text-on-surface-secondary"><span className="font-semibold text-on-surface">Entry #:</span> {booking.entryNumber}</p>}
-                        {booking.transactionId && (
-                            <div className="text-sm text-on-surface-secondary flex flex-wrap items-center gap-x-2">
-                                <span className="font-semibold text-on-surface">Txn ID:</span> 
-                                <span className="break-all">{booking.transactionId}</span>
-                                <AiSuggestionIcon suggestion={aiSuggestions[booking.id]} />
+                        <div className="border-t border-background pt-3 space-y-2">
+                          {booking.entryNumber && <p className="text-sm text-on-surface-secondary"><span className="font-semibold text-on-surface">Entry #:</span> {booking.entryNumber}</p>}
+                            {booking.transactionId && (
+                                <div className="text-sm text-on-surface-secondary flex flex-wrap items-center gap-x-2">
+                                    <span className="font-semibold text-on-surface">Txn ID:</span> 
+                                    <span className="break-all">{booking.transactionId}</span>
+                                    <AiSuggestionIcon suggestion={aiSuggestions[booking.id]} />
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="border-t border-background pt-3 flex flex-wrap gap-4 items-center justify-between">
+                            <div>
+                                <span className={`px-2 py-1 text-xs font-bold rounded-full ${ booking.status === BookingStatus.Confirmed ? 'bg-green-500/20 text-green-400' : booking.status === BookingStatus.Pending ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
+                                    {booking.status}
+                                </span>
+                                {booking.checkedIn && <span className="mt-2 block px-2 py-1 text-xs font-bold rounded-full bg-indigo-500/20 text-indigo-400">Checked In</span>}
+                            </div>
+                            {booking.paymentProof && (
+                              <button onClick={() => setViewingProof(booking.paymentProof!)} className="p-2 bg-blue-500/20 text-blue-400 rounded-md hover:bg-blue-500/40 flex items-center gap-1.5 text-sm font-semibold">
+                                  <Eye size={16} /> View Proof
+                              </button>
+                            )}
+                        </div>
+
+                        {booking.status === BookingStatus.Pending && (
+                            <div className="flex gap-2 border-t border-background pt-3">
+                                <button title="Approve Booking" onClick={() => handleBookingStatusChange(booking, BookingStatus.Confirmed)} className="flex-1 p-2 bg-green-500/20 text-green-400 rounded-md hover:bg-green-500/40 flex items-center justify-center gap-2"><CheckCircle size={18} /> Approve</button>
+                                <button title="Reject Booking" onClick={() => handleBookingStatusChange(booking, BookingStatus.Rejected)} className="flex-1 p-2 bg-red-500/20 text-red-400 rounded-md hover:bg-red-500/40 flex items-center justify-center gap-2"><XCircle size={18} /> Reject</button>
                             </div>
                         )}
                     </div>
-                    
-                    <div className="border-t border-background pt-3 flex flex-wrap gap-4 items-center justify-between">
-                        <div>
-                            <span className={`px-2 py-1 text-xs font-bold rounded-full ${ booking.status === BookingStatus.Confirmed ? 'bg-green-500/20 text-green-400' : booking.status === BookingStatus.Pending ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
-                                {booking.status}
-                            </span>
-                            {booking.checkedIn && <span className="mt-2 block px-2 py-1 text-xs font-bold rounded-full bg-indigo-500/20 text-indigo-400">Checked In</span>}
-                        </div>
-                        {booking.paymentProof && (
-                           <button onClick={() => setViewingProof(booking.paymentProof!)} className="p-2 bg-blue-500/20 text-blue-400 rounded-md hover:bg-blue-500/40 flex items-center gap-1.5 text-sm font-semibold">
-                              <Eye size={16} /> View Proof
-                           </button>
-                        )}
-                    </div>
-
-                    {booking.status === BookingStatus.Pending && (
-                        <div className="flex gap-2 border-t border-background pt-3">
-                            <button title="Approve Booking" onClick={() => handleBookingStatusChange(booking, BookingStatus.Confirmed)} className="flex-1 p-2 bg-green-500/20 text-green-400 rounded-md hover:bg-green-500/40 flex items-center justify-center gap-2"><CheckCircle size={18} /> Approve</button>
-                            <button title="Reject Booking" onClick={() => handleBookingStatusChange(booking, BookingStatus.Rejected)} className="flex-1 p-2 bg-red-500/20 text-red-400 rounded-md hover:bg-red-500/40 flex items-center justify-center gap-2"><XCircle size={18} /> Reject</button>
-                        </div>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
                 {searchedBookings.length === 0 && <p className="text-center p-8 text-on-surface-secondary">No bookings found matching your search.</p>}
               </div>
 
               {/* Desktop Table View */}
               <div className="hidden md:block bg-surface rounded-lg shadow-lg overflow-x-auto">
-                <table className="w-full text-left min-w-[800px]">
+                <table className="w-full text-left min-w-[850px]">
                   <thead className="bg-background">
                     <tr>
+                      <th className="p-4 font-semibold w-12">#</th>
                       <th className="p-4 font-semibold">Attendee</th>
                       <th className="p-4 font-semibold">Details</th>
                       <th className="p-4 font-semibold">Status</th>
@@ -451,8 +484,11 @@ const AdminPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {searchedBookings.map(booking => (
+                    {searchedBookings.map(booking => {
+                      const serialNumber = eventBookings.findIndex(b => b.id === booking.id) + 1;
+                      return (
                         <tr key={booking.id} className="border-t border-background hover:bg-background/50">
+                          <td className="p-4 align-top font-mono text-lg text-primary">{serialNumber > 0 ? serialNumber : '-'}</td>
                           <td className="p-4 align-top">
                             <div className="font-bold">{booking.userName}</div>
                             <div className="text-sm text-on-surface-secondary">{booking.userEmail}</div>
@@ -491,7 +527,8 @@ const AdminPage: React.FC = () => {
                             )}
                           </td>
                         </tr>
-                      ))}
+                      );
+                    })}
                   </tbody>
                 </table>
                 {searchedBookings.length === 0 && <p className="text-center p-8 text-on-surface-secondary">No bookings found matching your search.</p>}
@@ -504,30 +541,76 @@ const AdminPage: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 items-start">
             <div className="bg-surface p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><QrCode /> Scan Ticket</h2>
-                <div id={SCANNER_REGION_ID} className="w-full bg-gray-900 rounded-md aspect-square overflow-hidden relative"></div>
+                <div 
+                  id={SCANNER_REGION_ID} 
+                  className="w-full bg-gray-900 rounded-md aspect-square overflow-hidden relative cursor-pointer"
+                  onClick={handleScannerClick}
+                  title="Tap to focus"
+                >
+                   {isFocusing && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <div className="w-24 h-24 border-2 border-white rounded-md animate-focus-pulse"></div>
+                      </div>
+                  )}
+                </div>
             </div>
-            <div className="bg-surface p-6 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center">
+            <div className="bg-surface p-6 rounded-lg shadow-lg min-h-[300px] flex flex-col justify-center transition-all duration-300">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><BadgeInfo /> Verification Result</h2>
                 {isScannerLoading ? (
-                    <div className="text-center"><Loader2 size={24} className="animate-spin inline-block" /></div>
+                    <div className="text-center py-8"><Loader2 size={32} className="animate-spin text-primary" /></div>
                 ) : scanResult ? (
-                    <div className="space-y-3">
-                      <div className={`p-4 rounded-md flex items-center gap-3 text-lg font-bold ${ scanResult.type === 'success' ? 'bg-green-500/20 text-green-300' : scanResult.type === 'warning' ? 'bg-yellow-500/20 text-yellow-300' : 'bg-red-500/20 text-red-300'}`}>{scanResult.message}</div>
-                      {scanResult.booking.id && (
-                        <div className="space-y-2 text-on-surface-secondary">
-                          <p><strong>Name:</strong> <span className="text-on-surface">{scanResult.booking.userName}</span></p>
-                          <p><strong>Status:</strong> <span className="text-on-surface">{scanResult.booking.status}</span></p>
-                          <p><strong>Checked-in:</strong> <span className="text-on-surface">{scanResult.booking.checkedIn ? 'Yes' : 'No'}</span></p>
-                        </div>
-                      )}
-                      {scanResult.type === 'success' && !scanResult.booking.checkedIn && (
-                          <button onClick={handleCheckIn} className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md hover:bg-primary-focus transition-colors flex items-center justify-center gap-2">
-                              <UserCheck /> Mark as Entered
-                          </button>
-                      )}
+                    <div className="animate-fade-in text-center">
+                        {/* Success State */}
+                        {scanResult.type === 'success' && (
+                            <div className="space-y-4">
+                                <CheckCircle size={64} className="text-green-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-green-400">
+                                    {scanResult.booking.checkedIn ? 'Check-in Successful!' : 'Valid Ticket'}
+                                </h3>
+                                <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                    <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                    <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                </div>
+                                {!scanResult.booking.checkedIn && (
+                                    <button 
+                                        onClick={handleCheckIn} 
+                                        className="w-full bg-green-600 text-white font-bold py-4 px-6 rounded-md hover:bg-green-700 transition-colors text-lg flex items-center justify-center gap-3 disabled:bg-gray-500 disabled:cursor-not-allowed"
+                                        disabled={isCheckingIn}
+                                    >
+                                        {isCheckingIn ? <Loader2 className="animate-spin" /> : <UserCheck />}
+                                        {isCheckingIn ? 'Processing...' : 'Confirm Check-In'}
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        {/* Warning State */}
+                        {scanResult.type === 'warning' && (
+                            <div className="space-y-4">
+                                <ShieldAlert size={64} className="text-yellow-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-yellow-400">{scanResult.message}</h3>
+                                <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                    <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                    <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                </div>
+                            </div>
+                        )}
+                        {/* Error State */}
+                        {scanResult.type === 'error' && (
+                            <div className="space-y-4">
+                                <XCircle size={64} className="text-red-500 mx-auto" />
+                                <h3 className="text-2xl font-bold text-red-400">{scanResult.message}</h3>
+                                {scanResult.booking.id && (
+                                   <div className="text-left bg-background p-4 rounded-lg space-y-2">
+                                       <p><strong>Name:</strong> <span className="text-on-surface text-lg font-semibold">{scanResult.booking.userName}</span></p>
+                                       <p><strong>Status:</strong> <span className="text-on-surface font-semibold">{scanResult.booking.status}</span></p>
+                                   </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 ) : (
-                    <div className="text-center text-on-surface-secondary">
+                    <div className="text-center text-on-surface-secondary space-y-4">
+                        <QrCode size={48} className="mx-auto" />
                         <p>Point the camera at a QR code to begin verification.</p>
                     </div>
                 )}
