@@ -264,15 +264,7 @@ const BookingPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="relative">
                             <FileText className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-secondary" size={20} />
-                            <input
-                                type="text"
-                                name="transactionId"
-                                placeholder={!isFreeEvent && event.requiresTransactionId === false ? "Transaction ID / UTR (Optional)" : "Transaction ID / UTR"}
-                                required={!isFreeEvent && event.requiresTransactionId !== false}
-                                value={formData.transactionId}
-                                onChange={handleInputChange}
-                                className="w-full bg-background p-3 pl-10 rounded-md focus:ring-2 focus:ring-primary outline-none"
-                            />
+                            <input type="text" name="transactionId" placeholder="Transaction ID / UTR" required value={formData.transactionId} onChange={handleInputChange} className="w-full bg-background p-3 pl-10 rounded-md focus:ring-2 focus:ring-primary outline-none" />
                         </div>
                         <div className="bg-background rounded-md flex items-center justify-between p-3">
                             <span className="text-on-surface-secondary text-sm truncate pr-2">{paymentProofFile?.name || 'Upload payment screenshot...'}</span>

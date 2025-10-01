@@ -145,6 +145,7 @@ const addBooking = async (
         paymentProofUrl = urlData.publicUrl;
 
         // 5. Create the new paid booking record
+        // FIX: Use DbBooking type instead of DbBookingInsert
         const newBookingPayload: DbBooking = {
             id: `paid-booking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             eventId: bookingData.eventId,
@@ -199,6 +200,7 @@ const addBooking = async (
             throw new Error('This email address has already been used to book this event.');
         }
 
+        // FIX: Use DbFreeBooking type instead of DbFreeBookingInsert
         const newBookingPayload: DbFreeBooking = {
             id: `free-booking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             eventId: bookingData.eventId,
@@ -314,6 +316,7 @@ const updateBooking = async (updatedBooking: Booking): Promise<Booking> => {
     const { id } = updatedBooking;
 
     if (id.startsWith('free-')) {
+        // FIX: Use Partial<DbFreeBooking> type instead of DbFreeBookingUpdate
         const freeUpdatePayload: Partial<DbFreeBooking> = {
             eventId: updatedBooking.eventId,
             userName: updatedBooking.userName,
@@ -349,6 +352,7 @@ const updateBooking = async (updatedBooking: Booking): Promise<Booking> => {
         return { ...data, transactionId: null, paymentProof: null };
 
     } else { // Assumes paid booking
+        // FIX: Use Partial<DbBooking> type instead of DbBookingUpdate
         const paidUpdatePayload: Partial<DbBooking> = {
             eventId: updatedBooking.eventId,
             userName: updatedBooking.userName,

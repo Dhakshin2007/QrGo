@@ -34,7 +34,7 @@ export const EVENTS: Event[] = [
     name: 'TCA Bathukamma Event',
     date: '2025-10-04T23:00:00Z',
     venue: 'Lecture Hall Complex , IIT Ropar',
-    description: 'Btech - 300/- , MTech - 500/- , Phd - 800/- , Pay Before 3rd October',
+    description: 'Btech - 300/- , MTech - 500/- , Phd - 800/-',
     image: 'https://i.postimg.cc/GpX9br2s/image.png',
     status: EventStatus.Ongoing,
     upiId: 'mohithsai2701-3@okhdfcbank',

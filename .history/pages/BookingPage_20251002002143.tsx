@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Event, EventStatus } from '../types';
@@ -225,6 +226,9 @@ const BookingPage: React.FC = () => {
                                {isCopied ? <Check size={18} /> : <Copy size={18} />}
                            </button>
                         </div>
+                        <a href={event.upiLink} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-primary hover:underline">
+                            Pay with UPI App <ExternalLink size={16}/>
+                        </a>
                     </div>
                     {event.qrCodeImage && <img src={event.qrCodeImage} alt="Payment QR Code" className="w-32 h-32 sm:w-40 sm:h-40 rounded-lg bg-white p-1" />}
                 </div>
