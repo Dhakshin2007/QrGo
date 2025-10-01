@@ -38,7 +38,7 @@ export const EVENTS: Event[] = [
     image: 'https://i.postimg.cc/GpX9br2s/image.png',
     status: EventStatus.Ongoing,
     upiId: 'mohithsai2701-3@okhdfcbank',
-    remarks: 'ధన్యవాదాలు !! 💓💓',
+    remarks: '',
     requiresEntryNumber: true,
     // upiLink: 'upi://pay?pa=devsummit@upi&pn=Dev%20Summit%20Booking&am=500&cu=INR',
     qrCodeImage: 'https://i.postimg.cc/ZqJ2rvS1/Whats-App-Image-2025-09-23-at-15-43-44-a3345074.jpg',
