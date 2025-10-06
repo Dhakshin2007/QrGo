@@ -36,7 +36,7 @@ export const EVENTS: Event[] = [
     venue: 'Lecture Hall Complex , IIT Ropar',
     description: 'Btech - 300/- , MTech - 500/- , Phd - 800/- , Pay Before 3rd October',
     image: 'https://i.postimg.cc/GpX9br2s/image.png',
-    status: EventStatus.Closed,
+    status: EventStatus.Close,
     upiId: 'mohithsai2701-3@okhdfcbank',
     remarks: 'ధన్యవాదాలు !! 💓💓',
     requiresEntryNumber: true,
