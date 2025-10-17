@@ -17,9 +17,11 @@ root.render(
   </React.StrictMode>
 );
 
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js");
+    navigator.serviceWorker.register("<div className="" />
+    <public />service-worker.js");
   });
 }
 

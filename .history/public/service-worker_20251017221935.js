@@ -1,11 +1,5 @@
-const CACHE_NAME = "qrgo-v1";
-const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png"
-];
+const CACHE_NAME = "QrGo-v1";
+const urlsToCache = ["/", "/index.html", "/manifest.json", "/QrGo_Logo_192x192.png", "/QrGo_Logo_512x512.jpeg"];
 
 // Install event
 self.addEventListener("install", event => {
