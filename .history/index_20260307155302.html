@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Website Used to Host Events and Book Tickets and Inbuild scanning. If You want to Host an Event, Contact Us." />
+    <meta name="keywords" content="QrGo , QrGo Startup , Events IIT Ropar,Tickets , District , Paytm , Zomato , Ticket Booking , Event Hosting ,  Telugu Students IIT, IIT Ropar culture, IIT Ropar">
+    <meta name="author" content="Kotha Dhakshin">
+    <meta property="og:title" content="QrGo - Event Ticket Hosting Platform" />
+    <meta property="og:description" content="Official site for QrGo. Events, Bookings, and student details." />
+    <meta property="og:url" content="https://qrgo-weld.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://i.postimg.cc/Pp2xSxRH/qr.png" /> 
+    
+    <!--Manifest File-->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1A73E8">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Pp2xSxRH/qr.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QrGo</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            keyframes: {
+              'focus-pulse': {
+                '0%': { transform: 'scale(1.2)', opacity: '0.75' },
+                '100%': { transform: 'scale(0.8)', opacity: '0' },
+              }
+            },
+            animation: {
+              'focus-pulse': 'focus-pulse 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+            },
+            colors: {
+              'primary': '#14b8a6',
+              'primary-focus': '#0d9488',
+              'background': '#1f2937',
+              'surface': '#374151',
+              'on-surface': '#f3f4f6',
+              'on-surface-secondary': '#9ca3af',
+              'accent': '#6366f1',
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- QR Scanner -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  </head>
+
+  <body class="bg-background text-on-surface">
+    <div id="root"></div>
+
+    <!-- Vite entry -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
