@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
 build: {
   outDir: 'dist'
   // DELETE the entire rollupOptions block
-}
+},
     server: {
       port: 5174
     }
