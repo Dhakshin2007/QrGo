@@ -18,7 +18,6 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './') 
       }
     },
-
 build: {
   outDir: 'dist',
   rollupOptions: {
@@ -28,7 +27,7 @@ build: {
       assetFileNames: 'assets/[name].[ext]'
     }
   }
-},
+}
     server: {
       port: 5174
     }
