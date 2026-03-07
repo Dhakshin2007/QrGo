@@ -16,8 +16,8 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, '.')
       }
     },
-    server: {
-      port: 5174
+    build: {
+      outDir: "dist"
     }
   }
 })
