@@ -18,9 +18,16 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './') 
       }
     },
-    build: {
-      outDir: 'dist', // Explicitly tell Vite where to build
-    },
+build: {
+  outDir: 'dist',
+  rollupOptions: {
+    output: {
+      entryFileNames: 'assets/index.js',
+      chunkFileNames: 'assets/[name].js',
+      assetFileNames: 'assets/[name].[ext]'
+    }
+  }
+}
     server: {
       port: 5174
     }
