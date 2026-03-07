@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://qrgo-weld.vercel.app/sitemap.xml
