@@ -53,7 +53,7 @@ export const EVENTS: Event[] = [
     description: 'Btech/B.sc/B.ed - 300/- , MTech - 500/- , Phd - 700/- , Pay Before 25th March',
     image: 'https://i.postimg.cc/BnbCXDkq/Happyugadtelugucover23.avif',
     status: EventStatus.Ongoing,
-    price: 300,
+    price:
     upiId: 'mohithsai2701-3@okhdfcbank',
     remarks: 'ధన్యవాదాలు !! 💓💓',
     requiresEntryNumber: true,
