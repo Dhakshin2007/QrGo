@@ -382,6 +382,7 @@ const AdminPage: React.FC = () => {
   };
 
   return (
+    <>
     <div className="animate-fade-in">
       <div className="flex justify-between items-start mb-4 flex-wrap gap-4">
         <div>
@@ -673,7 +674,8 @@ const AdminPage: React.FC = () => {
           </div>
         </>
       )}
-      {viewingProof && (
+    </div>
+    {viewingProof && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fade-in" onClick={() => setViewingProof(null)}>
             <div className="bg-surface p-4 rounded-lg shadow-xl relative max-w-2xl w-full mx-4" onClick={e => e.stopPropagation()}>
                 <h3 className="text-xl font-bold mb-4 text-on-surface">Payment Proof</h3>
@@ -686,7 +688,7 @@ const AdminPage: React.FC = () => {
             </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
