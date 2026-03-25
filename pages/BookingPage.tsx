@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Event, EventStatus } from '../types';
-import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2, IndianRupee, Building } from 'lucide-react';
+import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2, IndianRupee, Building, BadgeInfo } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useEvents } from '../App';
 import { db } from '../services/db';
@@ -128,6 +128,10 @@ const BookingPage: React.FC = () => {
       setError('PIN must be exactly 4 digits.');
       return;
     }
+    if (event?.allowedEmailDomain && !formData.email.toLowerCase().endsWith(`@${event.allowedEmailDomain.toLowerCase()}`)) {
+      setError(`This event is restricted to ${event.allowedEmailDomain} email addresses only.`);
+      return;
+    }
     if (!isFreeEvent && !paymentProofFile) {
       setError('Please upload proof of payment.');
       return;
@@ -241,6 +245,11 @@ const BookingPage: React.FC = () => {
                 <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-secondary" size={20} />
                     <input type="email" name="email" placeholder="Email Address" required value={formData.email} onChange={handleInputChange} className="w-full bg-background p-3 pl-10 rounded-md focus:ring-2 focus:ring-primary outline-none" />
+                    {event?.allowedEmailDomain && (
+                        <p className="text-xs text-primary mt-1 ml-1 font-semibold flex items-center gap-1">
+                           <BadgeInfo size={12} /> Restricted to @{event.allowedEmailDomain}
+                        </p>
+                    )}
                 </div>
                 <div className="relative col-span-1 md:col-span-2">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-secondary" size={20} />

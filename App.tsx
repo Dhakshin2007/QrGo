@@ -5,6 +5,7 @@ import BookingPage from './pages/BookingPage';
 import MyTicketsPage from './pages/MyTicketsPage';
 import AdminPage from './pages/AdminPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import NotFoundPage from './pages/NotFoundPage';
 import Header from './components/Header';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
@@ -89,6 +90,7 @@ const App: React.FC = () => {
                   <ReactRouterDOM.Route path="/my-tickets" element={<MyTicketsPage />} />
                   <ReactRouterDOM.Route path="/admin" element={<AdminPage />} />
                   <ReactRouterDOM.Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                  <ReactRouterDOM.Route path="*" element={<NotFoundPage />} />
                 </ReactRouterDOM.Routes>
               </main>
               <footer className="bg-surface mt-auto py-6 px-4">

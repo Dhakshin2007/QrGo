@@ -37,6 +37,7 @@ export type Event = {
   upiLink?: string;
   qrCodeImage?: string;
   requiresTransactionId?: boolean;
+  allowedEmailDomain?: string;
 };
 
 export type Booking = {
