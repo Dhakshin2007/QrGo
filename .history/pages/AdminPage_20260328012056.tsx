@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { db } from '../services/db';
 import { Booking, BookingStatus, Event, EventStatus } from '../types';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Loader2, Search, CheckCircle, XCircle, QrCode, ShieldAlert, BadgeInfo, UserCheck, KeyRound, Eye, Users, LogOut, Briefcase, User, ArrowLeft, ToggleLeft, ToggleRight, CalendarCheck2, CalendarX2, Ticket, Clock, HelpCircle, CalendarPlus } from 'lucide-react';
+import { Loader2, Search, CheckCircle, XCircle, QrCode, ShieldAlert, BadgeInfo, UserCheck, KeyRound, Eye, Users, LogOut, Briefcase, User, ArrowLeft, ToggleLeft, ToggleRight, CalendarCheck2, CalendarX2, Ticket, Clock, HelpCircle, CalendarPlus, IndianRupee } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useEvents } from '../App';
@@ -53,6 +53,8 @@ const AdminPage: React.FC = () => {
 
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [sortPriority, setSortPriority] = useState<'none' | 'rejected' | 'confirmed' | 'pending'>('none');
   const [isLoadingBookings, setIsLoadingBookings] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<Record<string, AISuggestion>>({});
 
@@ -367,23 +369,63 @@ const AdminPage: React.FC = () => {
   }
 
   const eventBookings = bookings.filter(b => b.eventId === selectedEvent.id);
-  const searchedBookings = eventBookings.filter(b => 
-    b.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    b.userEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (b.id && b.id.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+
+  const toggleFilter = (filter: string) => {
+    setActiveFilters(prev =>
+      prev.includes(filter) ? prev.filter(f => f !== filter) : [...prev, filter]
+    );
+  };
+
+  const statusPriorityOrder: Record<string, number> = {
+    rejected:  { rejected: 0, confirmed: 1, pending: 2 },
+    confirmed: { confirmed: 0, pending: 1, rejected: 2 },
+    pending:   { pending: 0, confirmed: 1, rejected: 2 },
+    none:      { confirmed: 0, pending: 0, rejected: 0 },
+  }[sortPriority] ?? {};
+
+  const getStatusKey = (b: Booking): string => b.status.toLowerCase();
+
+  const searchedBookings = eventBookings
+    .filter(b => {
+      const term = searchTerm.toLowerCase();
+      const matchesSearch =
+        b.userName.toLowerCase().includes(term) ||
+        b.userEmail.toLowerCase().includes(term) ||
+        (b.id && b.id.toLowerCase().includes(term));
+
+      if (!matchesSearch) return false;
+
+      if (activeFilters.length === 0) return true;
+
+      return activeFilters.some(filter => {
+        if (filter === 'confirmed-checkedin') return b.status === BookingStatus.Confirmed && b.checkedIn;
+        if (filter === BookingStatus.Confirmed) return b.status === BookingStatus.Confirmed;
+        if (filter === BookingStatus.Rejected) return b.status === BookingStatus.Rejected;
+        if (filter === BookingStatus.Pending) return b.status === BookingStatus.Pending;
+        return false;
+      });
+    })
+    .sort((a, b) => {
+      if (sortPriority === 'none') return 0;
+      const aKey = getStatusKey(a);
+      const bKey = getStatusKey(b);
+      return (statusPriorityOrder[aKey] ?? 99) - (statusPriorityOrder[bKey] ?? 99);
+    });
   
+  const confirmedBookings = eventBookings.filter(b => b.status === BookingStatus.Confirmed);
   const stats = {
     total: eventBookings.length,
-    confirmed: eventBookings.filter(b => b.status === BookingStatus.Confirmed).length,
-    pending: eventBookings.filter(b => b.status === BookingStatus.Pending).length
+    confirmed: confirmedBookings.length,
+    pending: eventBookings.filter(b => b.status === BookingStatus.Pending).length,
+    revenue: (selectedEvent.price || 0) * confirmedBookings.length,
   };
 
   return (
+    <>
     <div className="animate-fade-in">
       <div className="flex justify-between items-start mb-4 flex-wrap gap-4">
         <div>
-            <button onClick={() => { setSelectedEvent(null); setView('dashboard'); setSearchTerm(''); }} className="flex items-center gap-2 mb-2 text-primary hover:underline">
+            <button onClick={() => { setSelectedEvent(null); setView('dashboard'); setSearchTerm(''); setActiveFilters([]); setSortPriority('none'); }} className="flex items-center gap-2 mb-2 text-primary hover:underline">
                 <ArrowLeft size={16} /> Back to My Events
             </button>
             <h1 className="text-4xl font-extrabold">Manage: <span className="text-primary">{selectedEvent.name}</span></h1>
@@ -393,10 +435,19 @@ const AdminPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="bg-surface p-4 rounded-lg flex items-center gap-4"><Ticket size={32} className="text-accent"/><div ><p className="text-2xl font-bold">{stats.total}</p><p className="text-on-surface-secondary">Total Bookings</p></div></div>
         <div className="bg-surface p-4 rounded-lg flex items-center gap-4"><CheckCircle size={32} className="text-green-500"/><div ><p className="text-2xl font-bold">{stats.confirmed}</p><p className="text-on-surface-secondary">Confirmed</p></div></div>
         <div className="bg-surface p-4 rounded-lg flex items-center gap-4"><Clock size={32} className="text-yellow-500"/><div ><p className="text-2xl font-bold">{stats.pending}</p><p className="text-on-surface-secondary">Pending</p></div></div>
+        <div className="bg-surface p-4 rounded-lg flex items-center gap-4">
+          <IndianRupee size={32} className="text-primary"/>
+          <div>
+            <p className="text-2xl font-bold">
+              {stats.revenue.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 })}
+            </p>
+            <p className="text-on-surface-secondary">Total Revenue</p>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-wrap border-b border-surface mb-6">
@@ -406,9 +457,65 @@ const AdminPage: React.FC = () => {
       </div>
 
       {(view === 'dashboard' || view === 'pins') && (
-         <div className="relative mb-6 max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-secondary" />
-            <input type="text" placeholder="Search by name, email..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-surface p-3 pl-12 rounded-md focus:ring-2 focus:ring-primary outline-none" />
+         <div className="mb-6 space-y-3">
+           <div className="relative max-w-lg">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-secondary" />
+              <input type="text" placeholder="Search by name, email..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-surface p-3 pl-12 rounded-md focus:ring-2 focus:ring-primary outline-none" />
+           </div>
+
+           {view === 'dashboard' && (
+             <div className="flex flex-wrap gap-3 items-center">
+               {/* Filter Pills */}
+               <div className="flex flex-wrap gap-2 items-center">
+                 <span className="text-xs font-semibold text-on-surface-secondary uppercase tracking-wider">Filter:</span>
+                 {(
+                   [
+                     { label: 'Confirmed', value: BookingStatus.Confirmed, active: 'bg-green-500/30 text-green-400 border-green-500/50', inactive: 'bg-surface text-on-surface-secondary border-surface hover:border-green-500/50' },
+                     { label: 'Rejected',  value: BookingStatus.Rejected,  active: 'bg-red-500/30 text-red-400 border-red-500/50',   inactive: 'bg-surface text-on-surface-secondary border-surface hover:border-red-500/50'   },
+                     { label: 'Pending',   value: BookingStatus.Pending,   active: 'bg-yellow-500/30 text-yellow-400 border-yellow-500/50', inactive: 'bg-surface text-on-surface-secondary border-surface hover:border-yellow-500/50' },
+                     { label: 'Confirmed & Checked-in', value: 'confirmed-checkedin', active: 'bg-indigo-500/30 text-indigo-400 border-indigo-500/50', inactive: 'bg-surface text-on-surface-secondary border-surface hover:border-indigo-500/50' },
+                   ] as const
+                 ).map(({ label, value, active, inactive }) => (
+                   <button
+                     key={value}
+                     onClick={() => toggleFilter(value)}
+                     className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-colors ${activeFilters.includes(value) ? active : inactive}`}
+                   >
+                     {label}
+                   </button>
+                 ))}
+                 {activeFilters.length > 0 && (
+                   <button onClick={() => setActiveFilters([])} className="px-3 py-1.5 text-xs font-semibold rounded-full bg-background text-on-surface-secondary border border-background hover:text-on-surface transition-colors">
+                     Clear
+                   </button>
+                 )}
+               </div>
+
+               {/* Sort Buttons */}
+               <div className="flex flex-wrap gap-2 items-center">
+                 <span className="text-xs font-semibold text-on-surface-secondary uppercase tracking-wider">Sort:</span>
+                 {(
+                   [
+                     { label: 'Rejected First',  value: 'rejected'  as const },
+                     { label: 'Confirmed First', value: 'confirmed' as const },
+                     { label: 'Pending First',   value: 'pending'   as const },
+                   ]
+                 ).map(({ label, value }) => (
+                   <button
+                     key={value}
+                     onClick={() => setSortPriority(prev => prev === value ? 'none' : value)}
+                     className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-colors ${
+                       sortPriority === value
+                         ? 'bg-primary/20 text-primary border-primary/50'
+                         : 'bg-surface text-on-surface-secondary border-surface hover:border-primary/40'
+                     }`}
+                   >
+                     {label}
+                   </button>
+                 ))}
+               </div>
+             </div>
+           )}
          </div>
       )}
 
@@ -662,7 +769,8 @@ const AdminPage: React.FC = () => {
           </div>
         </>
       )}
-      {viewingProof && (
+    </div>
+    {viewingProof && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fade-in" onClick={() => setViewingProof(null)}>
             <div className="bg-surface p-4 rounded-lg shadow-xl relative max-w-2xl w-full mx-4" onClick={e => e.stopPropagation()}>
                 <h3 className="text-xl font-bold mb-4 text-on-surface">Payment Proof</h3>
@@ -675,7 +783,7 @@ const AdminPage: React.FC = () => {
             </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
