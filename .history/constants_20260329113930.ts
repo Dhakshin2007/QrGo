@@ -85,7 +85,7 @@ export const EVENTS: Event[] = [
     venue: 'Online Event',
     description: 'This is a test event for Linkedin Users to book tickets and check the QR code functionality.',
     image: 'https://i.postimg.cc/g0Yp4zGw/tst.jpg',
-    status: EventStatus.Ongoing,
+    status: EventStatus.Boo,
     requiresEntryNumber: false,
     // Notice upiId, upiLink, and qrCodeImage are not included
   },

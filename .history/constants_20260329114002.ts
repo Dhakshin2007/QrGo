@@ -52,7 +52,7 @@ export const EVENTS: Event[] = [
     venue: 'Lecture Hall Complex , IIT Ropar',
     description: 'Btech/B.sc/B.ed - 300/- , MTech - 500/- , Phd - 700/- , Pay Before 25th March',
     image: 'https://i.postimg.cc/BnbCXDkq/Happyugadtelugucover23.avif',
-    status: EventStatus.Closed,
+    status: EventStatus.Ongoing,
     price: 300,
     upiId: 'daggolu.9243@wahdfc.bank',
     remarks: 'ధన్యవాదాలు !! 💓💓',
