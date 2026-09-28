@@ -1,20 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
-import { BookingStatus } from '../types';
-
+import { BookingStatus, EventStatus } from '../types';
 
 const supabaseUrl = 'https://hkniptskidhgpavyejwz.supabase.co';
-// This is a valid-looking dummy key to prevent startup crashes. It will not work for API calls.
 const supabaseKey = 'sb_publishable_tQDQrjVzkEe6GwUMwAzoYA_YMzWUTT5'; 
 
 if (supabaseUrl.includes('your-project-url') || supabaseKey.includes('PASTE_YOUR_REAL')) {
-    // This will crash the app and show a clear error in the developer console,
-    // preventing the app from running in a broken state.
-    throw new Error("Supabase credentials are not set! Please update services/supabaseClient.ts with your project's URL and anon key. You can get these from your Supabase project's API settings.");
+    throw new Error("Supabase credentials are not set! Please update services/supabaseClient.ts with your project's URL and anon key.");
 }
 
-
-// Define database types for TypeScript support
-// The database schema uses quoted identifiers (e.g., "eventId") to match the camelCase used in the application.
+// bookings and free_bookings remain 100% UNCHANGED in the database.
 export type DbBooking = {
   id: string;
   eventId: string;
@@ -29,7 +23,6 @@ export type DbBooking = {
   createdAt: string;
 };
 
-// New types for the `free_bookings` table
 export type DbFreeBooking = {
   id: string;
   eventId: string;
@@ -43,10 +36,38 @@ export type DbFreeBooking = {
   createdAt: string;
 };
 
+export type DbSeatReservation = {
+  id: string;
+  eventId: string;
+  seatId: string;
+  bookingId: string;
+  userEmail: string;
+  status: BookingStatus;
+  createdAt: string;
+};
 
-// FIX: Type inference issues were causing errors. Defining the table schemas
-// with explicit, inline Row, Insert, and Update types ensures the Supabase client
-// correctly infers method signatures and return types, resolving downstream errors.
+export type DbEvent = {
+  id: string;
+  organizerId: string;
+  name: string;
+  date: string;
+  venue: string;
+  venueMapLink: string | null;
+  description: string;
+  image: string;
+  status: EventStatus;
+  price: number | null;
+  remarks: string | null;
+  requiresEntryNumber: boolean;
+  upiId: string | null;
+  upiLink: string | null;
+  qrCodeImage: string | null;
+  requiresTransactionId: boolean;
+  allowedEmailDomain: string | null;
+  seatingConfig: any | null;
+  createdAt: string;
+};
+
 export interface Database {
   public: {
     Tables: {
@@ -70,12 +91,12 @@ export interface Database {
           userName: string;
           userEmail: string;
           userPhone: string;
-          transactionId: string | null;
-          paymentProof: string | null;
+          transactionId?: string | null;
+          paymentProof?: string | null;
           pin: string;
-          status: BookingStatus;
-          checkedIn: boolean;
-          createdAt: string;
+          status?: BookingStatus;
+          checkedIn?: boolean;
+          createdAt?: string;
         };
         Update: {
           id?: string;
@@ -110,11 +131,11 @@ export interface Database {
           userName: string;
           userEmail: string;
           userPhone: string;
-          entryNumber: string | null;
+          entryNumber?: string | null;
           pin: string;
-          status: BookingStatus;
-          checkedIn: boolean;
-          createdAt: string;
+          status?: BookingStatus;
+          checkedIn?: boolean;
+          createdAt?: string;
         };
         Update: {
           id?: string;
@@ -126,6 +147,100 @@ export interface Database {
           pin?: string;
           status?: BookingStatus;
           checkedIn?: boolean;
+          createdAt?: string;
+        };
+      };
+      seat_reservations: {
+        Row: {
+          id: string;
+          eventId: string;
+          seatId: string;
+          bookingId: string;
+          userEmail: string;
+          status: BookingStatus;
+          createdAt: string;
+        };
+        Insert: {
+          id: string;
+          eventId: string;
+          seatId: string;
+          bookingId: string;
+          userEmail: string;
+          status?: BookingStatus;
+          createdAt?: string;
+        };
+        Update: {
+          id?: string;
+          eventId?: string;
+          seatId?: string;
+          bookingId?: string;
+          userEmail?: string;
+          status?: BookingStatus;
+          createdAt?: string;
+        };
+      };
+      events: {
+        Row: {
+          id: string;
+          organizerId: string;
+          name: string;
+          date: string;
+          venue: string;
+          venueMapLink: string | null;
+          description: string;
+          image: string;
+          status: EventStatus;
+          price: number | null;
+          remarks: string | null;
+          requiresEntryNumber: boolean;
+          upiId: string | null;
+          upiLink: string | null;
+          qrCodeImage: string | null;
+          requiresTransactionId: boolean;
+          allowedEmailDomain: string | null;
+          seatingConfig: any | null;
+          createdAt: string;
+        };
+        Insert: {
+          id: string;
+          organizerId: string;
+          name: string;
+          date: string;
+          venue: string;
+          venueMapLink?: string | null;
+          description: string;
+          image: string;
+          status?: EventStatus;
+          price?: number | null;
+          remarks?: string | null;
+          requiresEntryNumber?: boolean;
+          upiId?: string | null;
+          upiLink?: string | null;
+          qrCodeImage?: string | null;
+          requiresTransactionId?: boolean;
+          allowedEmailDomain?: string | null;
+          seatingConfig?: any | null;
+          createdAt?: string;
+        };
+        Update: {
+          id?: string;
+          organizerId?: string;
+          name?: string;
+          date?: string;
+          venue?: string;
+          venueMapLink?: string | null;
+          description?: string;
+          image?: string;
+          status?: EventStatus;
+          price?: number | null;
+          remarks?: string | null;
+          requiresEntryNumber?: boolean;
+          upiId?: string | null;
+          upiLink?: string | null;
+          qrCodeImage?: string | null;
+          requiresTransactionId?: boolean;
+          allowedEmailDomain?: string | null;
+          seatingConfig?: any | null;
           createdAt?: string;
         };
       };
@@ -144,6 +259,5 @@ export interface Database {
     };
   };
 }
-
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey);

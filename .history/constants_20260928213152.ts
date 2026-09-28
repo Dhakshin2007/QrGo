@@ -62,25 +62,21 @@ export const EVENTS: Event[] = [
     qrCodeImage: 'https://i.postimg.cc/c46TKwf6/IMG-20260327-WA0001.jpg',
     requiresTransactionId: false,
   },
-  {
-    id: 'tca-dushera-2k26',
-    organizerId: 'org-1',
-    name: 'TCA Dussehra Event',
-    date: '2026-10-24T05:00:00Z',
-    venue: 'Lecture Hall Complex , IIT Ropar',
-    description: 'Btech/B.sc/B.ed - 350/- , MTech - 500/- , Phd - 700/- , Pay Before 20th October',
-    image: 'https://i.postimg.cc/GpX9br2s/image.png',
-    status: EventStatus.Ongoing,
-    price: 350,
-    upiId: '8187075098@ybl',
-    remarks: 'ధన్యవాదాలు !! 💓💓',
-    requiresEntryNumber: true,
-    allowedEmailDomain: 'iitrpr.ac.in',
-    // upiLink: 'upi://pay?pa=devsummit@upi&pn=Dev%20Summit%20Booking&am=500&cu=INR',
-    qrCodeImage: 'https://i.postimg.cc/HnrPZTNm/Screenshot-2026-09-28-213724.png',
-    requiresTransactionId: false,
-  },
+  // {
+  //   id: 'Fresco-2k25',
+  //   organizerId: 'org-2',
+  //   name: 'Freshers Party(2025)',
+  //   date: '2025-08-10T10:30:00Z',
+  //   venue: 'Ground Behind Dubey Canteen',
+  //   description: 'This is a event for freshers by Seniors to book tickets.',
+  //   image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2070&auto=format&fit=crop',
+  //   status: EventStatus.Ongoing,
+  //   requiresEntryNumber: true,
+  //   upiId: 'fresco@upi',
+  //   upiLink: 'upi://pay?pa=devsummit@upi&pn=Dev%20Summit%20Booking&am=500&cu=INR',
+  //   qrCodeImage: 'https://static.vecteezy.com/system/resources/previews/000/692/604/non_2x/party-crowd-banner-design-vector.jpg'
 
+  // },
   // {
   //   id: 'cinema-premiere-live',
   //   organizerId: 'super-admin',
@@ -128,4 +124,46 @@ export const EVENTS: Event[] = [
   //   // Notice upiId, upiLink, and qrCodeImage are not included — this is a free event
   // },
 
+  // {
+  //   id: 'Zeitgeist-2025',
+  //   organizerId: 'org-1',
+  //   name: 'Zeitgeist IIT Ropar Cultural Fest',
+  //   date: '2025-10-25T13:30:00Z', // Displays as 7:00 PM IST
+  //   venue: 'IIT Ropar Campus',
+  //   description: 'Experience a night of unforgettable music under the stars with top indie bands. Food trucks and merch available.',
+  //   image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1974&auto=format&fit=crop',
+  //   status: EventStatus.Upcoming,
+  //   price: 350,
+  //   upiId: 'musicfest@upi',
+  //   upiLink: 'upi://pay?pa=musicfest@upi&pn=Indie%20Music%20Fest&am=350&cu=INR',
+  //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=musicfest@upi&pn=Indie%20Music%20Fest'
+  // },
+  // {
+  //   id: 'food-carnival-2025',
+  //   organizerId: 'org-1',
+  //   name: 'Gourmet Food Carnival',
+  //   date: '2025-09-05T06:30:00Z', // Displays as 12:00 PM IST
+  //   venue: 'Exhibition Grounds',
+  //   description: 'A paradise for food lovers. Taste cuisines from around the world, watch live cooking demos, and enjoy a day of culinary delight.',
+  //   image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop',
+  //   status: EventStatus.Closed,
+  //   price: 150,
+  //   upiId: 'foodfest@upi',
+  //   upiLink: 'upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival&am=150&cu=INR',
+  //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=foodfest@upi&pn=Gourmet%20Food%20Carnival'
+  // },
+  // {
+  //   id: 'art-expo-2025',
+  //   organizerId: 'org-1',
+  //   name: 'Modern Art Expo',
+  //   date: '2025-11-01T05:30:00Z', // Displays as 11:00 AM IST
+  //   venue: 'Grand Art Gallery',
+  //   description: 'Explore stunning works from contemporary artists. The expo features paintings, sculptures, and interactive installations.',
+  //   image: 'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?q=80&w=2066&auto=format&fit=crop',
+  //   status: EventStatus.Ongoing,
+  //   price: 200,
+  //   upiId: 'artexpo@upi',
+  //   upiLink: 'upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo&am=200&cu=INR',
+  //   qrCodeImage: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=artexpo@upi&pn=Modern%20Art%20Expo'
+  // }
 ];

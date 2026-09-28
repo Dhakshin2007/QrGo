@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { Event, EventStatus } from '../types';
-import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2, IndianRupee, Building, BadgeInfo } from 'lucide-react';
+import { ArrowLeft, Loader2, Copy, Check, ExternalLink, User, Mail, Phone, KeyRound, FileText, ClipboardCheck, Trash2, IndianRupee, Building, BadgeInfo, Armchair } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useEvents } from '../App';
 import { db } from '../services/db';
 import { ORGANIZERS } from '../contexts/AuthContext';
+import SeatMap from '../components/SeatMap';
 
 const BookingPage: React.FC = () => {
   const { eventId } = ReactRouterDOM.useParams<{ eventId: string }>();
@@ -26,6 +27,7 @@ const BookingPage: React.FC = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null);
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -97,6 +99,7 @@ const BookingPage: React.FC = () => {
   const handleClearForm = () => {
     setFormData(initialFormData);
     setPaymentProofFile(null);
+    setSelectedSeats([]);
     if (eventId) {
       localStorage.removeItem(`bookingForm-${eventId}`);
     }
@@ -136,6 +139,11 @@ const BookingPage: React.FC = () => {
       setError('Please upload proof of payment.');
       return;
     }
+    // Reserved seating validation
+    if (event?.seatingConfig && selectedSeats.length === 0) {
+      setError('Please select at least one seat from the seat map.');
+      return;
+    }
     
     setIsLoading(true);
     try {
@@ -149,6 +157,9 @@ const BookingPage: React.FC = () => {
         entryNumber: event?.requiresEntryNumber ? formData.entryNumber : null,
         transactionId: isFreeEvent ? null : formData.transactionId,
         pin: formData.pin,
+        selectedSeats: event?.seatingConfig && selectedSeats.length > 0
+          ? JSON.stringify(selectedSeats)
+          : null,
       }, isFreeEvent ? null : paymentProofFile);
 
       const successMessage = isFreeEvent 
@@ -236,6 +247,30 @@ const BookingPage: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
+
+           {/* ── Reserved Seating Section (only for events with seatingConfig) ── */}
+           {event.seatingConfig && event.status === EventStatus.Ongoing && (
+             <fieldset>
+               <legend className="text-xl font-semibold mb-1 w-full col-span-1 md:col-span-2 border-b border-background pb-2 flex items-center gap-2">
+                 <Armchair size={20} className="text-primary" />
+                 Choose Your Seats
+                 {selectedSeats.length > 0 && (
+                   <span className="ml-auto text-sm font-normal text-primary">
+                     {selectedSeats.length} seat{selectedSeats.length > 1 ? 's' : ''} selected
+                   </span>
+                 )}
+               </legend>
+               <div className="mt-4">
+                 <SeatMap
+                   eventId={event.id}
+                   config={event.seatingConfig}
+                   selectedSeats={selectedSeats}
+                   onSelectionChange={setSelectedSeats}
+                 />
+               </div>
+             </fieldset>
+           )}
+
            <fieldset className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <legend className="text-xl font-semibold mb-4 w-full col-span-1 md:col-span-2 border-b border-background pb-2">Your Details</legend>
                 <div className="relative">

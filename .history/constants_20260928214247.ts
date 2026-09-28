@@ -65,7 +65,7 @@ export const EVENTS: Event[] = [
   {
     id: 'tca-dushera-2k26',
     organizerId: 'org-1',
-    name: 'TCA Dussehra Event',
+    name: 'TCA Dushera Event',
     date: '2026-10-24T05:00:00Z',
     venue: 'Lecture Hall Complex , IIT Ropar',
     description: 'Btech/B.sc/B.ed - 350/- , MTech - 500/- , Phd - 700/- , Pay Before 20th October',

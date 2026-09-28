@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { Booking, Event, BookingStatus, EventStatus } from '../types';
-import { Calendar, MapPin, User, CheckCircle, Clock, XCircle, QrCode, CalendarX2, Loader2, MapPinned, Info } from 'lucide-react';
+import { Calendar, MapPin, User, CheckCircle, Clock, XCircle, QrCode, CalendarX2, Loader2, MapPinned, Info, Armchair } from 'lucide-react';
 import { ORGANIZERS } from '../contexts/AuthContext';
 import { LOGO_URL } from '../constants';
 
@@ -96,6 +96,30 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking, event }) => {
                 </div>
               </div>
           )}
+          {/* Assigned seats for reserved-seat events */}
+          {booking.selectedSeats && (() => {
+            try {
+              const seats: string[] = JSON.parse(booking.selectedSeats);
+              if (seats.length === 0) return null;
+              return (
+                <div className="flex items-start gap-3">
+                  <Armchair className="text-primary mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-on-surface-secondary">Your Seats</p>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {seats.map(seat => (
+                        <span key={seat} className="bg-primary/20 text-primary text-xs font-bold px-2.5 py-1 rounded-full">
+                          {seat}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            } catch {
+              return null;
+            }
+          })()}
           {booking.checkedIn && (
               <div className="flex items-center gap-2 text-green-400 font-bold p-2 bg-green-500/10 rounded-md">
                 <CheckCircle /> Checked In

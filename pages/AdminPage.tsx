@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { db } from '../services/db';
 import { Booking, BookingStatus, Event, EventStatus } from '../types';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Loader2, Search, CheckCircle, XCircle, QrCode, ShieldAlert, BadgeInfo, UserCheck, KeyRound, Eye, Users, LogOut, Briefcase, User, ArrowLeft, ToggleLeft, ToggleRight, CalendarCheck2, CalendarX2, Ticket, Clock, HelpCircle, CalendarPlus, IndianRupee } from 'lucide-react';
+import { Loader2, Search, CheckCircle, XCircle, QrCode, ShieldAlert, BadgeInfo, UserCheck, KeyRound, Eye, Users, LogOut, Briefcase, User, ArrowLeft, ToggleLeft, ToggleRight, CalendarCheck2, CalendarX2, Ticket, Clock, HelpCircle, CalendarPlus, IndianRupee, Armchair } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useEvents } from '../App';
@@ -549,6 +549,20 @@ const AdminPage: React.FC = () => {
                                     <AiSuggestionIcon suggestion={aiSuggestions[booking.id]} />
                                 </div>
                             )}
+                            {booking.selectedSeats && (() => {
+                               try {
+                                 const seats: string[] = JSON.parse(booking.selectedSeats);
+                                 if (!seats.length) return null;
+                                 return (
+                                   <div className="flex flex-wrap items-center gap-1.5 text-sm">
+                                     <span className="font-semibold text-on-surface flex items-center gap-1"><Armchair size={14} /> Seats:</span>
+                                     {seats.map(s => (
+                                       <span key={s} className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">{s}</span>
+                                     ))}
+                                   </div>
+                                 );
+                               } catch { return null; }
+                             })()}
                         </div>
                         
                         <div className="border-t border-background pt-3 flex flex-wrap gap-4 items-center justify-between">
@@ -609,6 +623,20 @@ const AdminPage: React.FC = () => {
                                 <AiSuggestionIcon suggestion={aiSuggestions[booking.id]} />
                               </div>
                             )}
+                            {booking.selectedSeats && (() => {
+                              try {
+                                const seats: string[] = JSON.parse(booking.selectedSeats);
+                                if (!seats.length) return null;
+                                return (
+                                  <div className="flex flex-wrap items-center gap-1 mt-1">
+                                    <span className="text-xs font-semibold text-on-surface-secondary flex items-center gap-1 mr-1"><Armchair size={12} /> Seats:</span>
+                                    {seats.map(s => (
+                                      <span key={s} className="bg-primary/20 text-primary text-xs font-bold px-2 py-0.5 rounded-full">{s}</span>
+                                    ))}
+                                  </div>
+                                );
+                              } catch { return null; }
+                            })()}
                           </td>
                           <td className="p-4 align-top">
                             <span className={`px-2 py-1 text-xs font-bold rounded-full ${ booking.status === BookingStatus.Confirmed ? 'bg-green-500/20 text-green-400' : booking.status === BookingStatus.Pending ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
