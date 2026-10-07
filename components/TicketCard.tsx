@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
 import { Booking, Event, BookingStatus, EventStatus } from '../types';
-import { Calendar, MapPin, User, CheckCircle, Clock, XCircle, QrCode, CalendarX2, Loader2, MapPinned, Info, Armchair } from 'lucide-react';
+import { Calendar, MapPin, User, CheckCircle, Clock, XCircle, QrCode, CalendarX2, Loader2, MapPinned, Info, Armchair, Download, CalendarPlus } from 'lucide-react';
 import { ORGANIZERS } from '../contexts/AuthContext';
 import { LOGO_URL } from '../constants';
+import { downloadTicketImage, buildGoogleCalendarUrl } from '../utils/ticketExport';
 
 interface TicketCardProps {
   booking: Booking;
@@ -12,6 +13,8 @@ interface TicketCardProps {
 
 const TicketCard: React.FC<TicketCardProps> = ({ booking, event }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [downloading, setDownloading] = useState<'png' | 'jpg' | null>(null);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const organizer = event ? ORGANIZERS.find(o => o.id === event.organizerId) : undefined;
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking, event }) => {
     if (booking.status === BookingStatus.Confirmed && event && event.status !== EventStatus.Closed) {
       const qrData = JSON.stringify({ bookingId: booking.id, eventId: booking.eventId, userName: booking.userName });
       QRCode.toDataURL(qrData, {
-        width: 256,
+        width: 512,
         margin: 2,
         color: {
           dark: '#000000',
@@ -33,6 +36,21 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking, event }) => {
       setQrCodeUrl('');
     }
   }, [booking.status, booking.id, booking.eventId, booking.userName, event]);
+
+  const handleDownload = async (format: 'png' | 'jpg') => {
+    if (!event || !qrCodeUrl) return;
+    setDownloading(format);
+    setDownloadError(null);
+    try {
+      await downloadTicketImage(booking, event, qrCodeUrl, format);
+    } catch (err) {
+      console.error('[TicketCard] download failed:', err);
+      setDownloadError('Could not download the ticket. Please try again.');
+    } finally {
+      setDownloading(null);
+    }
+  };
+
 
   if (!event) {
     return <div className="bg-surface rounded-lg p-6 text-center text-red-400">Event details not found for this booking.</div>;
@@ -160,6 +178,34 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking, event }) => {
           )}
         </div>
       </div>
+      {/* Actions: download ticket image & add to Google Calendar */}
+      {event.status !== EventStatus.Closed && booking.status !== BookingStatus.Rejected && (
+        <div className="px-6 pb-6 -mt-2">
+          <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-4">
+            {booking.status === BookingStatus.Confirmed && qrCodeUrl && (
+              <button
+                type="button"
+                onClick={() => handleDownload('png')}
+                disabled={downloading !== null}
+                className="inline-flex items-center gap-2 bg-primary hover:bg-primary-focus text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-wait"
+              >
+                {downloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+                Download Ticket
+              </button>
+            )}
+            <a
+              href={buildGoogleCalendarUrl(event, booking)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-background hover:bg-background/70 border border-white/15 text-on-surface text-sm font-semibold px-4 py-2 rounded-lg transition-colors sm:ml-auto"
+            >
+              <CalendarPlus size={16} className="text-primary" />
+              Add to Google Calendar
+            </a>
+          </div>
+          {downloadError && <p className="text-red-400 text-sm mt-2">{downloadError}</p>}
+        </div>
+      )}
     </div>
   );
 };

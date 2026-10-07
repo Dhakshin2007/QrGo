@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUserEmail(email.toLowerCase());
     setUserPin(pin);
     setIsUserLoggedIn(true); 
-  };  
+  };  cant
 
   const logoutUser = () => {
     setIsUserLoggedIn(false);
