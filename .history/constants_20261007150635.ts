@@ -68,7 +68,7 @@ export const EVENTS: Event[] = [
     name: 'TCA Dussehra Event',
     date: '2026-10-20T05:00:00Z',
     venue: 'Lecture Hall Complex , IIT Ropar',
-    description: 'Btech/B.sc/B.ed - 400/- , MTech - 600/- , Phd - 800/- , Pay Before 16th October',
+    description: 'Btech/B.sc/B.ed - 400/- , MTech - 500/- , Phd - 700/- , Pay Before 20th October',
     image: 'https://i.postimg.cc/GpX9br2s/image.png',
     status: EventStatus.Ongoing,
     // price: 350,
