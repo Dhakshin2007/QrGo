@@ -205,19 +205,34 @@ const addBooking = async (
     let paymentProofUrl: string | null = null;
 
     if (bookingData.transactionId && bookingData.transactionId.trim()) {
-      const { data: existingTxn, error: findError } = await supabase.from('bookings').select('id').eq('transactionId', bookingData.transactionId.trim()).single();
-      if (findError && findError.code !== 'PGRST116') {
+      const trimmedTxn = bookingData.transactionId.trim();
+      const { data: existingTxn, error: findError } = await supabase
+        .from('bookings')
+        .select('id, status')
+        .eq('eventId', bookingData.eventId)
+        .eq('transactionId', trimmedTxn)
+        .neq('status', BookingStatus.Rejected)
+        .maybeSingle();
+
+      if (findError) {
         await rollbackSeatReservations();
         throw new Error('Could not verify transaction ID. Please try again.');
       }
       if (existingTxn) {
         await rollbackSeatReservations();
-        throw new Error('This Transaction ID has already been used.');
+        throw new Error('This Transaction ID has already been used for this event.');
       }
     }
 
-    const { data: existingEmail1, error: emailCheck1 } = await supabase.from('bookings').select('id').eq('eventId', bookingData.eventId).eq('userEmail', lowerCaseEmail).single();
-    if (emailCheck1 && emailCheck1.code !== 'PGRST116') {
+    const { data: existingEmail1, error: emailCheck1 } = await supabase
+      .from('bookings')
+      .select('id, status')
+      .eq('eventId', bookingData.eventId)
+      .eq('userEmail', lowerCaseEmail)
+      .neq('status', BookingStatus.Rejected)
+      .maybeSingle();
+
+    if (emailCheck1) {
       await rollbackSeatReservations();
       throw new Error('Could not verify your booking details. Please try again.');
     }
@@ -260,8 +275,15 @@ const addBooking = async (
     }
     return { ...newBooking, entryNumber: null, selectedSeats: bookingData.selectedSeats ?? null };
   } else {
-    const { data: existingEmail2, error: emailCheck2 } = await supabase.from('free_bookings').select('id').eq('eventId', bookingData.eventId).eq('userEmail', lowerCaseEmail).single();
-    if (emailCheck2 && emailCheck2.code !== 'PGRST116') {
+    const { data: existingEmail2, error: emailCheck2 } = await supabase
+      .from('free_bookings')
+      .select('id, status')
+      .eq('eventId', bookingData.eventId)
+      .eq('userEmail', lowerCaseEmail)
+      .neq('status', BookingStatus.Rejected)
+      .maybeSingle();
+
+    if (emailCheck2) {
       await rollbackSeatReservations();
       throw new Error('Could not verify your booking details. Please try again.');
     }
