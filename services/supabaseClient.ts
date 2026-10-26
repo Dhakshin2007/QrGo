@@ -244,6 +244,32 @@ export interface Database {
           createdAt?: string;
         };
       };
+      organizers: {
+        Row: {
+          id: string;
+          username: string;
+          name: string;
+          logoUrl: string | null;
+          password: string;
+          createdAt: string;
+        };
+        Insert: {
+          id: string;
+          username: string;
+          name: string;
+          logoUrl?: string | null;
+          password: string;
+          createdAt?: string;
+        };
+        Update: {
+          id?: string;
+          username?: string;
+          name?: string;
+          logoUrl?: string | null;
+          password?: string;
+          createdAt?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

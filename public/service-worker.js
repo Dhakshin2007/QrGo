@@ -8,7 +8,7 @@
 // This is handled automatically by Vite's content-hash asset filenames — the
 // assets cache only grows and old entries are pruned during the activate step.
 
-const CACHE_VERSION = "qrgo-v3";
+const CACHE_VERSION = "qrgo-v4";
 const ASSETS_CACHE   = `${CACHE_VERSION}-assets`;
 const FALLBACK_CACHE = `${CACHE_VERSION}-fallback`;
 
@@ -93,11 +93,20 @@ self.addEventListener("fetch", event => {
   }
 
   // ── Everything else → Network-first with cache fallback ──────────────────
+  // Only cache GET requests (POST/PUT/etc. cannot be cached)
+  if (request.method !== 'GET') {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   event.respondWith(
     fetch(request)
       .then(response => {
-        if (response.ok) {
-          caches.open(FALLBACK_CACHE).then(cache => cache.put(request, response.clone()));
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(FALLBACK_CACHE).then(cache => {
+            cache.put(request, copy).catch(err => console.warn('[SW] Cache put ignored:', err));
+          });
         }
         return response;
       })

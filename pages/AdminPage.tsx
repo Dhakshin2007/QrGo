@@ -189,12 +189,21 @@ const AdminPage: React.FC = () => {
     };
   }, [loggedInOrganizer, selectedEvent, view, startScanner, stopScanner]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginOrganizer(username, secretId)) {
-      setError('');
-    } else {
-      setError('Incorrect username or Secret ID.');
+    setError('');
+    setIsLoggingIn(true);
+    try {
+      const success = await loginOrganizer(username, secretId);
+      if (!success) {
+        setError('Incorrect username or Secret ID.');
+      }
+    } catch (err) {
+      setError('An error occurred during login. Please try again.');
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -279,7 +288,13 @@ const AdminPage: React.FC = () => {
               <input type="password" placeholder="Secret ID" value={secretId} onChange={(e) => setSecretId(e.target.value)} required className="w-full bg-background p-3 pl-10 rounded-md focus:ring-2 focus:ring-primary outline-none"/>
             </div>
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-            <button type="submit" className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md hover:bg-primary-focus transition-colors">Login</button>
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full bg-primary text-white font-bold py-3 px-6 rounded-md hover:bg-primary-focus transition-colors disabled:opacity-60 disabled:cursor-wait flex items-center justify-center gap-2"
+            >
+              {isLoggingIn ? 'Logging in...' : 'Login'}
+            </button>
           </form>
         </div>
       </div>
